@@ -49,7 +49,7 @@ const TopBar: React.FC = () => {
     }
 
     return(
-        <div className="relative">
+        <div className="sticky bg-white top-0">
             <div className="border-b h-16.5 flex justify-between items-center px-15">
                 <div>
                     <img className="size-8" src={ume_logo} />
@@ -71,8 +71,8 @@ const TopBar: React.FC = () => {
                 </div>
             </div>
             {/* product menu */}
-            <div ref={productMenuRef} className="pt-3 w-2xl fixed right-0 left-0 mx-auto bg-white">
-                <div className={(isOpenProductMenu ? "block" : "hidden")+ " " + "justify-center items-center flex flex-col px-3 border w-2xl mx-auto rounded-2xl"}>
+            <div ref={productMenuRef} className={(isOpenProductMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
+                <div className={(isOpenProductMenu ? "block" : "hidden")+ " " + "justify-center bg-white items-center flex flex-col px-3 border w-2xl mx-auto rounded-2xl"}>
                     <div className="flex w-full my-3 justify-between bg-gray-100 p-3 rounded-md">
                         <div className="flex items-center gap-2 group">
                             <div>
