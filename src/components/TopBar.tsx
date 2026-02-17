@@ -15,7 +15,6 @@ import { GiBrain } from "react-icons/gi";
 import { GrFormNextLink } from "react-icons/gr";
 import { GoDesktopDownload } from "react-icons/go";
 import { BsBoxSeam } from "react-icons/bs";
-import { FaRegFaceFlushed } from "react-icons/fa6";
 import ProductCard from "./TopBar/ProductCard";
 
 
@@ -40,6 +39,15 @@ const TopBar: React.FC = () => {
         }
 
     }, [isOpenProductMenu])
+
+    function handleMouseOverProductMenu() {
+        setIsOpenProductMenu(true);
+    }
+
+    function handleMouseOverAIMenu() {
+        setIsOpenProductMenu(false);
+    }
+
     return(
         <div className="relative">
             <div className="border-b h-16.5 flex justify-between items-center px-15">
@@ -47,8 +55,10 @@ const TopBar: React.FC = () => {
                     <img className="size-8" src={ume_logo} />
                 </div>
                 <div ref={menuRef} className="flex h-full text-sm items-center gap-1 *:hover:bg-gray-300 *:px-2 *:py-1 *:hover:rounded-sm">
-                    <div onMouseEnter={() => setIsOpenProductMenu(true)} className="flex items-center"><p>Product</p><IoIosArrowDown className="m-1.5"/></div>
-                    <div className="flex items-center"><p>AI</p><IoIosArrowDown className="m-1.5"/></div>
+                    <div onMouseEnter={handleMouseOverProductMenu} className={"flex items-center " + (isOpenProductMenu && "bg-gray-300 rounded-sm")}><p>Product</p>
+                        {!isOpenProductMenu ? <IoIosArrowDown className="m-1.5"/> : <IoIosArrowUp className="m-1.5"/>}
+                    </div>
+                    <div onMouseOver={handleMouseOverAIMenu} className="flex items-center"><p>AI</p><IoIosArrowDown className="m-1.5"/></div>
                     <div className="flex items-center"><p>Solutions</p><IoIosArrowDown className="m-1.5"/></div>
                     <div className="flex items-center"><p>Resources</p><IoIosArrowDown className="m-1.5"/></div>
                     <div><p>Enterprise</p></div>
