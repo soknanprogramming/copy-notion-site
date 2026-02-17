@@ -18,13 +18,13 @@ const ProductCard: React.FC<Props> = ({
 }) => {
     return (
         <Link to={url}>
-            <div className={" " + className}>
+            <div className={"hover:bg-gray-200 my-1.5 w-50 h-12 flex items-center gap-3 p-2 rounded-2xl" + " " + className}>
                 <div>
                     {children}
                 </div>
-                <div>
-                    <h1>{title}</h1>
-                    <p>{description}</p>
+                <div className="-my-5">
+                    <h1 className="text-sm">{title}</h1>
+                    <p className="text-xs text-gray-500">{description}</p>
                 </div>
             </div>
         </Link>
