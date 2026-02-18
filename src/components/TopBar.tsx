@@ -24,12 +24,10 @@ import ListColMenu from "./TopBar/ListColMenu";
 import CardRowMenu from "./TopBar/CardRowMenu";
 
 interface Prop {
-    isShowBody: boolean;
     setIsShowBody: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const TopBar: React.FC<Prop> = ({ setIsShowBody, isShowBody }) => {
-    setIsShowBody(true);
+const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
     const [isOpenProductMenu, setIsOpenProductMenu] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const productMenuRef = useRef<HTMLDivElement>(null);
@@ -43,7 +41,6 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody, isShowBody }) => {
     const [isOpenAIMenu, setIsOpenAIMenu] = useState<boolean>(false);
     const [isOpenSolutionsMenu, setIsOpenSolutionsMenu] = useState<boolean>(false);
     const [isOpenResourcesMenu, setIsOpenResourcesMenu] = useState<boolean>(false);
-
 
     useEffect(() => {
         const handleEnterOutside = (event: MouseEvent) => {
@@ -68,16 +65,17 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody, isShowBody }) => {
 
     useEffect(() => {
         const mq = window.matchMedia('(min-width: 1280px)')
-        setIsShowBody(mq.matches)
         const handler = (e: MediaQueryListEvent) => {
-            setIsShowBody(e.matches)
             if (e.matches) {
                 setIsOpenSmallDeviceMenu(false)
+                setIsShowBody(true)
+                // console.log("min-width: 1280px")
             }
         }
         mq.addEventListener('change', handler)
         return () => mq.removeEventListener('change', handler)
-    }, [isShowBody])
+    }, [setIsShowBody])
+
 
     function handleMouseOverProductMenu() {
         setIsOpenProductMenu(true);
@@ -142,146 +140,151 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody, isShowBody }) => {
 
 
     return (
-        <div className="sticky bg-white top-0">
-            <div className={(!isOpenSmallDeviceMenu && "border-b-gray-300 border-b") + " h-16.5 flex justify-between items-center px-5"}>
-                <div>
-                    <img className="size-8" src={ume_logo} />
+        <>
+            <div className="sticky bg-white top-0">
+                <div className={(!isOpenSmallDeviceMenu && "border-b-gray-300 border-b") + " h-16.5 flex justify-between items-center px-5"}>
+                    <div>
+                        <img className="size-8" src={ume_logo} />
+                    </div>
+                    {/* menu center */}
+                    <div ref={menuRef} className="hidden xl:flex h-full text-sm items-center gap-1 *:hover:bg-gray-300 *:px-2 *:py-1 *:hover:rounded-sm">
+                        <div onMouseEnter={handleMouseOverProductMenu} className={"flex items-center " + (isOpenProductMenu && "bg-gray-300 rounded-sm")}><p>Product</p>
+                            {!isOpenProductMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
+                        </div>
+                        <div onMouseOver={handleMouseOverAIMenu} className={"flex items-center " + (isOpenAIMenu && "bg-gray-300 rounded-sm")}><p>AI</p>
+                            {!isOpenAIMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
+                        </div>
+                        <div onMouseOver={handleMouseOverSolutionsMenu} className={"flex items-center " + (isOpenSolutionsMenu && "bg-gray-300 rounded-sm")}><p>Solutions</p>
+                            {!isOpenSolutionsMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
+                        </div>
+                        <div onMouseOver={handleMouseOverResourcesMenu} className={"flex items-center " + (isOpenResourcesMenu && "bg-gray-300 rounded-sm")}><p>Resources</p>
+                            {!isOpenResourcesMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
+                        </div>
+                        <div onMouseOver={handleMouseOverEnterpriseMenu}><p>Enterprise</p></div>
+                        <div onMouseOver={handleMouseOverPricingMenu}><p>Pricing</p></div>
+                        <div onMouseOver={handleMouseOverRequestADemoMenu}><p>Request a demo</p></div>
+                    </div>
+                    <div className="flex gap-4 -ml-35">
+                        <button className="hidden md:block hover:bg-gray-300 py-1 px-2 rounded-md">Log in</button>
+                        <button className="bg-blue-500 hover:bg-blue-400 text-white py-1.5 px-3 rounded-md">Join Notion</button>
+                        <button onClick={() => {
+                            setIsOpenSmallDeviceMenu(prev => {
+                                const next = !prev
+                                setIsShowBody(!next)
+                                return next
+                            })
+                        }} className="xl:hidden">
+                            {isOpenSmallDeviceMenu ? <FiX className="size-8" /> : <LuMenu className="size-8" />}
+                        </button>
+                    </div>
                 </div>
-                {/* menu center */}
-                <div ref={menuRef} className="hidden xl:flex h-full text-sm items-center gap-1 *:hover:bg-gray-300 *:px-2 *:py-1 *:hover:rounded-sm">
-                    <div onMouseEnter={handleMouseOverProductMenu} className={"flex items-center " + (isOpenProductMenu && "bg-gray-300 rounded-sm")}><p>Product</p>
-                        {!isOpenProductMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
-                    </div>
-                    <div onMouseOver={handleMouseOverAIMenu} className={"flex items-center " + (isOpenAIMenu && "bg-gray-300 rounded-sm")}><p>AI</p>
-                        {!isOpenAIMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
-                    </div>
-                    <div onMouseOver={handleMouseOverSolutionsMenu} className={"flex items-center " + (isOpenSolutionsMenu && "bg-gray-300 rounded-sm")}><p>Solutions</p>
-                        {!isOpenSolutionsMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
-                    </div>
-                    <div onMouseOver={handleMouseOverResourcesMenu} className={"flex items-center " + (isOpenResourcesMenu && "bg-gray-300 rounded-sm")}><p>Resources</p>
-                        {!isOpenResourcesMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
-                    </div>
-                    <div onMouseOver={handleMouseOverEnterpriseMenu}><p>Enterprise</p></div>
-                    <div onMouseOver={handleMouseOverPricingMenu}><p>Pricing</p></div>
-                    <div onMouseOver={handleMouseOverRequestADemoMenu}><p>Request a demo</p></div>
-                </div>
-                <div className="flex gap-4 -ml-35">
-                    <button className="hidden md:block hover:bg-gray-300 py-1 px-2 rounded-md">Log in</button>
-                    <button className="bg-blue-500 hover:bg-blue-400 text-white py-1.5 px-3 rounded-md">Join Notion</button>
-                    <button onClick={() => {
-                        setIsOpenSmallDeviceMenu(prev => !prev)
-                        setIsShowBody(isOpenSmallDeviceMenu)
-                    }} className="xl:hidden">
-                        {isOpenSmallDeviceMenu ? <FiX className="size-8" /> : <LuMenu className="size-8" />}
-                    </button>
-                </div>
-            </div>
-            {/* product menu */}
-            <div ref={productMenuRef} className={(isOpenProductMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
-                <div className={"justify-center bg-white items-center flex flex-col px-3 border w-2xl mx-auto rounded-2xl"}>
-                    <div className="flex w-full my-3 justify-between bg-gray-100 p-3 rounded-md">
-                        <div className="flex items-center gap-2 group">
-                            <div>
-                                <img className="size-10" src={ume_logo} alt="" />
+                {/* product menu */}
+                <div ref={productMenuRef} className={(isOpenProductMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
+                    <div className={"justify-center bg-white items-center flex flex-col px-3 border w-2xl mx-auto rounded-2xl"}>
+                        <div className="flex w-full my-3 justify-between bg-gray-100 p-3 rounded-md">
+                            <div className="flex items-center gap-2 group">
+                                <div>
+                                    <img className="size-10" src={ume_logo} alt="" />
+                                </div>
+                                <div>
+                                    <h1 className="text-2xl group-hover:underline underline-offset-2">Notion</h1>
+                                    <p className="text-xs text-gray-500">Your AI workspace</p>
+                                </div>
+                            </div>
+                            <div className="*:flex *:gap-2 *:items-center *:m-2 *:text-sm">
+                                <div className="group">
+                                    <FaRegCalendarAlt />
+                                    <p className="group-hover:underline underline-offset-2">Notion Calendar</p>
+                                </div>
+                                <div className="group">
+                                    <FaMailchimp />
+                                    <p className="group-hover:underline underline-offset-2">Notion Mail</p>
+                                </div>
+                            </div>
+                        </div>
+                        {/* show product */}
+                        <div className="flex w-full justify-between">
+                            <EveryProductMune />
+                        </div>
+                        <hr className="h-px my-2 bg-neutral-quaternary border-0" />
+                        {/* last session */}
+                        <div className="flex *:flex *:items-center w-full justify-between mb-5">
+                            <div className="">
+                                <div className="px-2"><BsBoxSeam /></div>
+                                <div>Claude Opus 4.6.</div>
+                                <div className="flex items-center"><span className="text-blue-500 hover:underline underline-offset-2">&nbsp;See what's new</span><GrFormNextLink /></div>
                             </div>
                             <div>
-                                <h1 className="text-2xl group-hover:underline underline-offset-2">Notion</h1>
-                                <p className="text-xs text-gray-500">Your AI workspace</p>
+                                <div className="px-2"><GoDesktopDownload /></div>
+                                <div>Download the</div>
+                                <div className="flex items-center"><span className="text-blue-500 hover:underline underline-offset-2">&nbsp;Notion App</span><GrFormNextLink /></div>
                             </div>
-                        </div>
-                        <div className="*:flex *:gap-2 *:items-center *:m-2 *:text-sm">
-                            <div className="group">
-                                <FaRegCalendarAlt />
-                                <p className="group-hover:underline underline-offset-2">Notion Calendar</p>
-                            </div>
-                            <div className="group">
-                                <FaMailchimp />
-                                <p className="group-hover:underline underline-offset-2">Notion Mail</p>
-                            </div>
-                        </div>
-                    </div>
-                    {/* show product */}
-                    <div className="flex w-full justify-between">
-                        <EveryProductMune />
-                    </div>
-                    <hr className="h-px my-2 bg-neutral-quaternary border-0" />
-                    {/* last session */}
-                    <div className="flex *:flex *:items-center w-full justify-between mb-5">
-                        <div className="">
-                            <div className="px-2"><BsBoxSeam /></div>
-                            <div>Claude Opus 4.6.</div>
-                            <div className="flex items-center"><span className="text-blue-500 hover:underline underline-offset-2">&nbsp;See what's new</span><GrFormNextLink /></div>
-                        </div>
-                        <div>
-                            <div className="px-2"><GoDesktopDownload /></div>
-                            <div>Download the</div>
-                            <div className="flex items-center"><span className="text-blue-500 hover:underline underline-offset-2">&nbsp;Notion App</span><GrFormNextLink /></div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {/* AI menu */}
-            <div ref={aiMenuRef} className={(isOpenAIMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
-                <div className="bg-white justify-between flex p-3 border w-2xl *:w-55 mx-auto rounded-2xl">
-                    <div className="self-center">
-                        <img className="size-50" src={ume_welcome} alt="" />
+                {/* AI menu */}
+                <div ref={aiMenuRef} className={(isOpenAIMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
+                    <div className="bg-white justify-between flex p-3 border w-2xl *:w-55 mx-auto rounded-2xl">
+                        <div className="self-center">
+                            <img className="size-50" src={ume_welcome} alt="" />
+                        </div>
+                        <EveryAIMenu />
                     </div>
-                    <EveryAIMenu />
                 </div>
-            </div>
-            {/* Solutions menu */}
-            <div ref={solutionsMenuRef} className={(isOpenSolutionsMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
-                <CardRowMenu>
-                    <ListColMenu title="Teams" type_of_col="header">
-                        <Link to="/"><p>Eng & Product</p></Link>
-                        <Link to="/"><p>Design</p></Link>
-                        <Link to="/"><p>Marketing</p></Link>
-                        <Link to="/"><p>IT</p></Link>
-                    </ListColMenu>
-                    <ListColMenu title="Company size" type_of_col="sample">
-                        <Link to="/"><p>Startups</p></Link>
-                        <Link to="/"><p>Small businesses</p></Link>
-                        <Link to="/"><p>Enterprise</p></Link>
-                    </ListColMenu>
-                    <ListColMenu title="Resources" type_of_col="sample">
-                        <Link to="/"><p>Education</p></Link>
-                        <Link to="/"><p>Personal</p></Link>
-                        <Link to="/"><p>Professional</p></Link>
-                        <Link to="/"><p>AI use cases</p></Link>
-                    </ListColMenu>
-                </CardRowMenu>
-            </div>
-            {/* Resources menu */}
-            <div ref={resourcesMenuRef} className={(isOpenResourcesMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
-                <CardRowMenu>
-                    <ListColMenu title="Browse" type_of_col="header">
-                        <Link to="/"><p>Templates</p></Link>
-                        <Link to="/"><p>Consultants</p></Link>
-                        <Link to="/"><p>Integrations</p></Link>
-                    </ListColMenu>
-                    <ListColMenu title="Discover" type_of_col="sample">
-                        <Link to="/"><p>What's New</p></Link>
-                        <Link to="/"><p>Customer stories</p></Link>
-                        <Link to="/"><p>Blog</p></Link>
-                        <Link to="/"><p>Webinars</p></Link>
-                    </ListColMenu>
-                    <ListColMenu title="Learn" type_of_col="sample">
-                        <Link to="/"><p>Academy</p></Link>
-                        <Link to="/"><p>Product tours</p></Link>
-                        <Link to="/"><p>Product tours</p></Link>
-                    </ListColMenu>
-                </CardRowMenu>
+                {/* Solutions menu */}
+                <div ref={solutionsMenuRef} className={(isOpenSolutionsMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
+                    <CardRowMenu>
+                        <ListColMenu title="Teams" type_of_col="header">
+                            <Link to="/"><p>Eng & Product</p></Link>
+                            <Link to="/"><p>Design</p></Link>
+                            <Link to="/"><p>Marketing</p></Link>
+                            <Link to="/"><p>IT</p></Link>
+                        </ListColMenu>
+                        <ListColMenu title="Company size" type_of_col="sample">
+                            <Link to="/"><p>Startups</p></Link>
+                            <Link to="/"><p>Small businesses</p></Link>
+                            <Link to="/"><p>Enterprise</p></Link>
+                        </ListColMenu>
+                        <ListColMenu title="Resources" type_of_col="sample">
+                            <Link to="/"><p>Education</p></Link>
+                            <Link to="/"><p>Personal</p></Link>
+                            <Link to="/"><p>Professional</p></Link>
+                            <Link to="/"><p>AI use cases</p></Link>
+                        </ListColMenu>
+                    </CardRowMenu>
+                </div>
+                {/* Resources menu */}
+                <div ref={resourcesMenuRef} className={(isOpenResourcesMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
+                    <CardRowMenu>
+                        <ListColMenu title="Browse" type_of_col="header">
+                            <Link to="/"><p>Templates</p></Link>
+                            <Link to="/"><p>Consultants</p></Link>
+                            <Link to="/"><p>Integrations</p></Link>
+                        </ListColMenu>
+                        <ListColMenu title="Discover" type_of_col="sample">
+                            <Link to="/"><p>What's New</p></Link>
+                            <Link to="/"><p>Customer stories</p></Link>
+                            <Link to="/"><p>Blog</p></Link>
+                            <Link to="/"><p>Webinars</p></Link>
+                        </ListColMenu>
+                        <ListColMenu title="Learn" type_of_col="sample">
+                            <Link to="/"><p>Academy</p></Link>
+                            <Link to="/"><p>Product tours</p></Link>
+                            <Link to="/"><p>Product tours</p></Link>
+                        </ListColMenu>
+                    </CardRowMenu>
+                </div>
             </div>
             {/* small device menu */}
-            <div className={(isOpenSmallDeviceMenu ? "block" : "hidden") + " w-full h-full bg-white fixed pt-3 pl-6.5"}>
+            <div className={(isOpenSmallDeviceMenu ? "block" : "hidden") + " w-full h-full bg-white pt-3 pl-6.5"}>
                 <button onClick={handleOnClickProductSmallDeviceMenu} className={"flex items-center text-2xl"}><p>Product</p>
-                        {!isOpenProductSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
+                    {!isOpenProductSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
                 </button>
                 <div className={(isOpenProductSmallDeviceMenu ? "block" : "hidden") + " py-2 pr-6 [&>*>*>*]:rounded-md"}>
                     <EveryProductMune />
                 </div>
                 <button onClick={handleOnClickAISmallDeviceMenu} className={"flex items-center text-2xl"}><p>AI</p>
-                        {!isOpenAISmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
+                    {!isOpenAISmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
                 </button>
                 <div className={(isOpenAISmallDeviceMenu ? "block" : "hidden") + " py-2"}>
                     <EveryAIMenu />
@@ -290,7 +293,9 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody, isShowBody }) => {
                     Hello
                 </div>
             </div>
-        </div>
+        </>
+
+
     )
 }
 
