@@ -27,6 +27,10 @@ const TopBar: React.FC = () => {
     const [isOpenProductMenu, setIsOpenProductMenu] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const productMenuRef = useRef<HTMLDivElement>(null);
+    const aiMenuRef = useRef<HTMLDivElement>(null);
+    const solutionsMenuRef = useRef<HTMLDivElement>(null);
+    const resourcesMenuRef = useRef<HTMLDivElement>(null);
+
 
     const [isOpenAIMenu, setIsOpenAIMenu] = useState<boolean>(false);
 
@@ -37,21 +41,24 @@ const TopBar: React.FC = () => {
 
     useEffect(() => {
         const handleEnterOutside = (event: MouseEvent) => {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)
-            && productMenuRef.current && !productMenuRef.current.contains(event.target as Node)) {
+            if (
+                productMenuRef.current && !productMenuRef.current.contains(event.target as Node) &&
+                aiMenuRef.current && !aiMenuRef.current.contains(event.target as Node) &&
+                solutionsMenuRef.current && !solutionsMenuRef.current.contains(event.target as Node) &&
+                resourcesMenuRef.current && !resourcesMenuRef.current.contains(event.target as Node) &&
+                menuRef.current && !menuRef.current.contains(event.target as Node)
+            ) {
                 setIsOpenProductMenu(false);
+                setIsOpenAIMenu(false);
+                setIsOpenSolutionsMenu(false);
+                setIsOpenResourcesMenu(false);
             }
         }
 
-        if (isOpenProductMenu) {
-            document.addEventListener('mouseover', handleEnterOutside);
-        }
+        document.addEventListener('mouseover', handleEnterOutside);
+        return () => document.removeEventListener('mouseover', handleEnterOutside);
 
-        return () => {
-            document.removeEventListener('mouseover', handleEnterOutside);
-        }
-
-    }, [isOpenProductMenu])
+    }, [isOpenProductMenu, isOpenAIMenu, isOpenSolutionsMenu, isOpenResourcesMenu])
 
     function handleMouseOverProductMenu() {
         setIsOpenProductMenu(true);
@@ -85,21 +92,21 @@ const TopBar: React.FC = () => {
         setIsOpenProductMenu(false);
         setIsOpenAIMenu(false);
         setIsOpenSolutionsMenu(false);
-        setIsOpenResourcesMenu(true);
+        setIsOpenResourcesMenu(false);
     }
 
     function handleMouseOverPricingMenu() {
         setIsOpenProductMenu(false);
         setIsOpenAIMenu(false);
         setIsOpenSolutionsMenu(false);
-        setIsOpenResourcesMenu(true);
+        setIsOpenResourcesMenu(false);
     }
 
     function handleMouseOverRequestADemoMenu() {
         setIsOpenProductMenu(false);
         setIsOpenAIMenu(false);
         setIsOpenSolutionsMenu(false);
-        setIsOpenResourcesMenu(true);
+        setIsOpenResourcesMenu(false);
     }
 
     return(
@@ -201,7 +208,7 @@ const TopBar: React.FC = () => {
                 </div>
             </div>
             {/* AI menu */}
-            <div className={(isOpenAIMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
+            <div ref={aiMenuRef} className={(isOpenAIMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
                 <div className="bg-white justify-between flex p-3 border w-2xl *:w-55 mx-auto rounded-2xl">
                     <div className="self-center">
                         <img className="size-50" src={ume_welcome} alt="" />
@@ -236,7 +243,7 @@ const TopBar: React.FC = () => {
                 </div>
             </div>
             {/* Solutions menu */}
-            <div className={(isOpenSolutionsMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
+            <div ref={solutionsMenuRef} className={(isOpenSolutionsMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
                 <CardRowMenu>
                     <ListColMenu title="Teams" type_of_col="header">
                         <Link to="/"><p>Eng & Product</p></Link>
@@ -258,7 +265,7 @@ const TopBar: React.FC = () => {
                 </CardRowMenu>
             </div>
             {/* Resources menu */}
-            <div className={(isOpenResourcesMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
+            <div ref={resourcesMenuRef} className={(isOpenResourcesMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
                 <CardRowMenu>
                     <ListColMenu title="Browse" type_of_col="header">
                         <Link to="/"><p>Templates</p></Link>
