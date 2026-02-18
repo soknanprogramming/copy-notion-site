@@ -119,9 +119,15 @@ const TopBar: React.FC = () => {
                     <div onMouseEnter={handleMouseOverProductMenu} className={"flex items-center " + (isOpenProductMenu && "bg-gray-300 rounded-sm")}><p>Product</p>
                         {!isOpenProductMenu ? <IoIosArrowDown className="m-1.5"/> : <IoIosArrowUp className="m-1.5"/>}
                     </div>
-                    <div onMouseOver={handleMouseOverAIMenu} className="flex items-center"><p>AI</p><IoIosArrowDown className="m-1.5"/></div>
-                    <div onMouseOver={handleMouseOverSolutionsMenu} className="flex items-center"><p>Solutions</p><IoIosArrowDown className="m-1.5"/></div>
-                    <div onMouseOver={handleMouseOverResourcesMenu} className="flex items-center"><p>Resources</p><IoIosArrowDown className="m-1.5"/></div>
+                    <div onMouseOver={handleMouseOverAIMenu} className={"flex items-center " + (isOpenAIMenu && "bg-gray-300 rounded-sm")}><p>AI</p>
+                        {!isOpenAIMenu ? <IoIosArrowDown className="m-1.5"/> : <IoIosArrowUp className="m-1.5"/>}
+                    </div>
+                    <div onMouseOver={handleMouseOverSolutionsMenu} className={"flex items-center " + (isOpenSolutionsMenu && "bg-gray-300 rounded-sm")}><p>Solutions</p>
+                        {!isOpenSolutionsMenu ? <IoIosArrowDown className="m-1.5"/> : <IoIosArrowUp className="m-1.5"/>}
+                    </div>
+                    <div onMouseOver={handleMouseOverResourcesMenu} className={"flex items-center " + (isOpenResourcesMenu && "bg-gray-300 rounded-sm")}><p>Resources</p>
+                        {!isOpenResourcesMenu ? <IoIosArrowDown className="m-1.5"/> : <IoIosArrowUp className="m-1.5"/>}
+                    </div>
                     <div onMouseOver={handleMouseOverEnterpriseMenu}><p>Enterprise</p></div>
                     <div onMouseOver={handleMouseOverPricingMenu}><p>Pricing</p></div>
                     <div onMouseOver={handleMouseOverRequestADemoMenu}><p>Request a demo</p></div>
