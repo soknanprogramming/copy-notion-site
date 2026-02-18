@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import ume_logo from "../assets/image/ume-logo.jpg"
+import ume_logo from "../assets/image/logo_ume.png"
 import ume_welcome from "../assets/image/ume-welcome.png"
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { FaMailchimp } from "react-icons/fa";
@@ -17,13 +17,19 @@ import { GiBrain } from "react-icons/gi";
 import { GrFormNextLink } from "react-icons/gr";
 import { GoDesktopDownload } from "react-icons/go";
 import { BsBoxSeam } from "react-icons/bs";
+import { LuMenu } from "react-icons/lu";
+import { FiX } from "react-icons/fi";
 import ProductCard from "./TopBar/ProductCard";
 import ListColMenu from "./TopBar/ListColMenu";
 import CardRowMenu from "./TopBar/CardRowMenu";
 
+interface Prop {
+    isShowBody: boolean;
+    setIsShowBody: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-
-const TopBar: React.FC = () => {
+const TopBar: React.FC<Prop> = ({ setIsShowBody, isShowBody }) => {
+    setIsShowBody(true);
     const [isOpenProductMenu, setIsOpenProductMenu] = useState<boolean>(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const productMenuRef = useRef<HTMLDivElement>(null);
@@ -31,11 +37,11 @@ const TopBar: React.FC = () => {
     const solutionsMenuRef = useRef<HTMLDivElement>(null);
     const resourcesMenuRef = useRef<HTMLDivElement>(null);
 
+    const [isOpenSmallDeviceMenu, setIsOpenSmallDeviceMenu] = useState<boolean>(false);
+
 
     const [isOpenAIMenu, setIsOpenAIMenu] = useState<boolean>(false);
-
     const [isOpenSolutionsMenu, setIsOpenSolutionsMenu] = useState<boolean>(false);
-
     const [isOpenResourcesMenu, setIsOpenResourcesMenu] = useState<boolean>(false);
 
 
@@ -59,6 +65,19 @@ const TopBar: React.FC = () => {
         return () => document.removeEventListener('mouseover', handleEnterOutside);
 
     }, [isOpenProductMenu, isOpenAIMenu, isOpenSolutionsMenu, isOpenResourcesMenu])
+
+    useEffect(() => {
+        const mq = window.matchMedia('(min-width: 1280px)')
+        setIsShowBody(mq.matches)
+        const handler = (e: MediaQueryListEvent) => {
+            setIsShowBody(e.matches)
+            if (e.matches) {
+                setIsOpenSmallDeviceMenu(false)
+            }
+        }
+        mq.addEventListener('change', handler)
+        return () => mq.removeEventListener('change', handler)
+    }, [isShowBody])
 
     function handleMouseOverProductMenu() {
         setIsOpenProductMenu(true);
@@ -109,32 +128,52 @@ const TopBar: React.FC = () => {
         setIsOpenResourcesMenu(false);
     }
 
-    return(
+    const [isOpenProductSmallDeviceMenu, setIsOpenProductSmallDeviceMenu] = useState<boolean>(false);
+    const [isOpenAISmallDeviceMenu, setIsOpenAISmallDeviceMenu] = useState<boolean>(false);
+
+
+    function handleOnClickProductSmallDeviceMenu() {
+        setIsOpenProductSmallDeviceMenu(prev => !prev)
+    }
+
+    function handleOnClickAISmallDeviceMenu() {
+        setIsOpenAISmallDeviceMenu(prev => !prev)
+    }
+
+
+    return (
         <div className="sticky bg-white top-0">
-            <div className="border-b h-16.5 flex justify-between items-center px-15">
+            <div className={(!isOpenSmallDeviceMenu && "border-b-gray-300 border-b") + " h-16.5 flex justify-between items-center px-5"}>
                 <div>
                     <img className="size-8" src={ume_logo} />
                 </div>
-                <div ref={menuRef} className="flex h-full text-sm items-center gap-1 *:hover:bg-gray-300 *:px-2 *:py-1 *:hover:rounded-sm">
+                {/* menu center */}
+                <div ref={menuRef} className="hidden xl:flex h-full text-sm items-center gap-1 *:hover:bg-gray-300 *:px-2 *:py-1 *:hover:rounded-sm">
                     <div onMouseEnter={handleMouseOverProductMenu} className={"flex items-center " + (isOpenProductMenu && "bg-gray-300 rounded-sm")}><p>Product</p>
-                        {!isOpenProductMenu ? <IoIosArrowDown className="m-1.5"/> : <IoIosArrowUp className="m-1.5"/>}
+                        {!isOpenProductMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
                     </div>
                     <div onMouseOver={handleMouseOverAIMenu} className={"flex items-center " + (isOpenAIMenu && "bg-gray-300 rounded-sm")}><p>AI</p>
-                        {!isOpenAIMenu ? <IoIosArrowDown className="m-1.5"/> : <IoIosArrowUp className="m-1.5"/>}
+                        {!isOpenAIMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
                     </div>
                     <div onMouseOver={handleMouseOverSolutionsMenu} className={"flex items-center " + (isOpenSolutionsMenu && "bg-gray-300 rounded-sm")}><p>Solutions</p>
-                        {!isOpenSolutionsMenu ? <IoIosArrowDown className="m-1.5"/> : <IoIosArrowUp className="m-1.5"/>}
+                        {!isOpenSolutionsMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
                     </div>
                     <div onMouseOver={handleMouseOverResourcesMenu} className={"flex items-center " + (isOpenResourcesMenu && "bg-gray-300 rounded-sm")}><p>Resources</p>
-                        {!isOpenResourcesMenu ? <IoIosArrowDown className="m-1.5"/> : <IoIosArrowUp className="m-1.5"/>}
+                        {!isOpenResourcesMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
                     </div>
                     <div onMouseOver={handleMouseOverEnterpriseMenu}><p>Enterprise</p></div>
                     <div onMouseOver={handleMouseOverPricingMenu}><p>Pricing</p></div>
                     <div onMouseOver={handleMouseOverRequestADemoMenu}><p>Request a demo</p></div>
                 </div>
-                <div className="flex gap-4 -ml-43">
-                    <button className="hover:bg-gray-300 py-1 px-2 rounded-md">Log in</button>
-                    <button className="bg-blue-500 hover:bg-blue-400 text-white py-1.5 px-3 rounded-md">Join Notion free</button>
+                <div className="flex gap-4 -ml-35">
+                    <button className="hidden md:block hover:bg-gray-300 py-1 px-2 rounded-md">Log in</button>
+                    <button className="bg-blue-500 hover:bg-blue-400 text-white py-1.5 px-3 rounded-md">Join Notion</button>
+                    <button onClick={() => {
+                        setIsOpenSmallDeviceMenu(prev => !prev)
+                        setIsShowBody(isOpenSmallDeviceMenu)
+                    }} className="xl:hidden">
+                        {isOpenSmallDeviceMenu ? <FiX className="size-8" /> : <LuMenu className="size-8" />}
+                    </button>
                 </div>
             </div>
             {/* product menu */}
@@ -152,63 +191,31 @@ const TopBar: React.FC = () => {
                         </div>
                         <div className="*:flex *:gap-2 *:items-center *:m-2 *:text-sm">
                             <div className="group">
-                                <FaRegCalendarAlt/>
+                                <FaRegCalendarAlt />
                                 <p className="group-hover:underline underline-offset-2">Notion Calendar</p>
                             </div>
                             <div className="group">
-                                <FaMailchimp/>
+                                <FaMailchimp />
                                 <p className="group-hover:underline underline-offset-2">Notion Mail</p>
                             </div>
                         </div>
                     </div>
                     {/* show product */}
                     <div className="flex w-full justify-between">
-                        <div>
-                            <ProductCard title="Notion AI" description="AI tools for work">
-                                <GiBrain/>
-                            </ProductCard>
-                            <ProductCard title="Agents" description="Automate busywork">
-                                <MdOutlineSupportAgent/>
-                            </ProductCard>
-                            <ProductCard title="AI Meeting Notes" description="Perfectly written by AI">
-                                <SiGotomeeting />
-                            </ProductCard>
-                            <ProductCard title="Enterprise Search" description="Find answers instantly">
-                                <FaSearchDollar/>
-                            </ProductCard>
-                        </div>
-                        <div>
-                            <ProductCard title="Knowledge Base" description="Centralize your knowledge">
-                                <GiGiftOfKnowledge/>
-                            </ProductCard>
-                            <ProductCard title="Docs" description="Simple and powerful">
-                                <SiGoogledocs/>
-                            </ProductCard>
-                            <ProductCard title="Product" description="Manage any project">
-                                <AiOutlineProduct/>
-                            </ProductCard>
-                        </div>
-                        <div>
-                            <ProductCard title="Integrations" description="Connect your apps">
-                                <MdIntegrationInstructions/>
-                            </ProductCard>
-                            <ProductCard title="Security" description="Safe and scalable">
-                                <MdSecurity/>
-                            </ProductCard>
-                        </div>
+                        <EveryProductMune />
                     </div>
-                    <hr className="h-px my-2 bg-neutral-quaternary border-0"/>
+                    <hr className="h-px my-2 bg-neutral-quaternary border-0" />
                     {/* last session */}
                     <div className="flex *:flex *:items-center w-full justify-between mb-5">
                         <div className="">
-                            <div className="px-2"><BsBoxSeam/></div>
+                            <div className="px-2"><BsBoxSeam /></div>
                             <div>Claude Opus 4.6.</div>
-                            <div className="flex items-center"><span className="text-blue-500 hover:underline underline-offset-2">&nbsp;See what's new</span><GrFormNextLink/></div>
+                            <div className="flex items-center"><span className="text-blue-500 hover:underline underline-offset-2">&nbsp;See what's new</span><GrFormNextLink /></div>
                         </div>
                         <div>
-                            <div className="px-2"><GoDesktopDownload/></div>
+                            <div className="px-2"><GoDesktopDownload /></div>
                             <div>Download the</div>
-                            <div className="flex items-center"><span className="text-blue-500 hover:underline underline-offset-2">&nbsp;Notion App</span><GrFormNextLink/></div>
+                            <div className="flex items-center"><span className="text-blue-500 hover:underline underline-offset-2">&nbsp;Notion App</span><GrFormNextLink /></div>
                         </div>
                     </div>
                 </div>
@@ -219,33 +226,7 @@ const TopBar: React.FC = () => {
                     <div className="self-center">
                         <img className="size-50" src={ume_welcome} alt="" />
                     </div>
-                    <div>
-                        <ListColMenu title="Features" type_of_col="feature">
-                            <ProductCard title="Notion AI" description="AI tools for work">
-                                <GiBrain/>
-                            </ProductCard>
-                            <ProductCard title="Agents" description="Automate busywork">
-                                <MdOutlineSupportAgent/>
-                            </ProductCard>
-                            <ProductCard title="AI Meeting Notes" description="Perfectly written by AI">
-                                <SiGotomeeting />
-                            </ProductCard>
-                            <ProductCard title="Enterprise Search" description="Find answers instantly">
-                                <FaSearchDollar/>
-                            </ProductCard>
-                        </ListColMenu>
-                        
-                    </div>
-                    <div className="">
-                        <ListColMenu title="Explore use cases" type_of_col="sample">
-                            <Link to="/">
-                                <p>For work</p>
-                            </Link>
-                            <Link to="/">
-                                <p>For life</p>
-                            </Link>
-                        </ListColMenu>
-                    </div>
+                    <EveryAIMenu />
                 </div>
             </div>
             {/* Solutions menu */}
@@ -291,8 +272,101 @@ const TopBar: React.FC = () => {
                     </ListColMenu>
                 </CardRowMenu>
             </div>
+            {/* small device menu */}
+            <div className={(isOpenSmallDeviceMenu ? "block" : "hidden") + " w-full h-full bg-white fixed pt-3 pl-6.5"}>
+                <button onClick={handleOnClickProductSmallDeviceMenu} className={"flex items-center text-2xl"}><p>Product</p>
+                        {!isOpenProductSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
+                </button>
+                <div className={(isOpenProductSmallDeviceMenu ? "block" : "hidden") + " py-2 pr-6 [&>*>*>*]:rounded-md"}>
+                    <EveryProductMune />
+                </div>
+                <button onClick={handleOnClickAISmallDeviceMenu} className={"flex items-center text-2xl"}><p>AI</p>
+                        {!isOpenAISmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
+                </button>
+                <div className={(isOpenAISmallDeviceMenu ? "block" : "hidden") + " py-2"}>
+                    <EveryAIMenu />
+                </div>
+                <div className="fixed bottom-0 ">
+                    Hello
+                </div>
+            </div>
         </div>
     )
 }
 
+
 export default TopBar;
+
+const EveryProductMune: React.FC = () => {
+    return (
+        <>
+            <div>
+                <ProductCard title="Notion AI" description="AI tools for work">
+                    <GiBrain />
+                </ProductCard>
+                <ProductCard title="Agents" description="Automate busywork">
+                    <MdOutlineSupportAgent />
+                </ProductCard>
+                <ProductCard title="AI Meeting Notes" description="Perfectly written by AI">
+                    <SiGotomeeting />
+                </ProductCard>
+                <ProductCard title="Enterprise Search" description="Find answers instantly">
+                    <FaSearchDollar />
+                </ProductCard>
+            </div>
+            <div>
+                <ProductCard title="Knowledge Base" description="Centralize your knowledge">
+                    <GiGiftOfKnowledge />
+                </ProductCard>
+                <ProductCard title="Docs" description="Simple and powerful">
+                    <SiGoogledocs />
+                </ProductCard>
+                <ProductCard title="Product" description="Manage any project">
+                    <AiOutlineProduct />
+                </ProductCard>
+            </div>
+            <div>
+                <ProductCard title="Integrations" description="Connect your apps">
+                    <MdIntegrationInstructions />
+                </ProductCard>
+                <ProductCard title="Security" description="Safe and scalable">
+                    <MdSecurity />
+                </ProductCard>
+            </div>
+        </>
+    )
+}
+
+const EveryAIMenu: React.FC = () => {
+    return (
+        <>
+            <div>
+                <ListColMenu title="AI features" type_of_col="feature">
+                    <ProductCard title="Notion AI" description="AI tools for work">
+                        <GiBrain />
+                    </ProductCard>
+                    <ProductCard title="Agents" description="Automate busywork">
+                        <MdOutlineSupportAgent />
+                    </ProductCard>
+                    <ProductCard title="AI Meeting Notes" description="Perfectly written by AI">
+                        <SiGotomeeting />
+                    </ProductCard>
+                    <ProductCard title="Enterprise Search" description="Find answers instantly">
+                        <FaSearchDollar />
+                    </ProductCard>
+                </ListColMenu>
+
+            </div>
+            <div className="">
+                <ListColMenu title="Explore use cases" type_of_col="sample">
+                    <Link to="/">
+                        <p>For work</p>
+                    </Link>
+                    <Link to="/">
+                        <p>For life</p>
+                    </Link>
+                </ListColMenu>
+            </div>
+        </>
+    )
+}
