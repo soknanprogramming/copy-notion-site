@@ -128,14 +128,38 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
 
     const [isOpenProductSmallDeviceMenu, setIsOpenProductSmallDeviceMenu] = useState<boolean>(false);
     const [isOpenAISmallDeviceMenu, setIsOpenAISmallDeviceMenu] = useState<boolean>(false);
+    const [isOpenSolutionsSmallDeviceMenu, setIsOpenSolutionsSmallDeviceMenu] = useState<boolean>(false);
+    const [isOpenResourcesSmallDeviceMenu, setIsOpenResourcesSmallDeviceMenu] = useState<boolean>(false);
+
+
 
 
     function handleOnClickProductSmallDeviceMenu() {
         setIsOpenProductSmallDeviceMenu(prev => !prev)
+        setIsOpenAISmallDeviceMenu(false)
+        setIsOpenSolutionsSmallDeviceMenu(false)
+        setIsOpenResourcesSmallDeviceMenu(false)
     }
 
     function handleOnClickAISmallDeviceMenu() {
+        setIsOpenProductSmallDeviceMenu(false)
         setIsOpenAISmallDeviceMenu(prev => !prev)
+        setIsOpenSolutionsSmallDeviceMenu(false)
+        setIsOpenResourcesSmallDeviceMenu(false)
+    }
+
+    function handleOnClickSolutionsSmallDeviceMenu() {
+        setIsOpenProductSmallDeviceMenu(false)
+        setIsOpenAISmallDeviceMenu(false)
+        setIsOpenSolutionsSmallDeviceMenu(prev => !prev)
+        setIsOpenResourcesSmallDeviceMenu(false)
+    }
+
+    function handleOnClickResourcesSmallDeviceMenu() {
+        setIsOpenProductSmallDeviceMenu(false)
+        setIsOpenAISmallDeviceMenu(false)
+        setIsOpenSolutionsSmallDeviceMenu(false)
+        setIsOpenResourcesSmallDeviceMenu(prev => !prev)
     }
 
 
@@ -234,61 +258,60 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                 {/* Solutions menu */}
                 <div ref={solutionsMenuRef} className={(isOpenSolutionsMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
                     <CardRowMenu>
-                        <ListColMenu title="Teams" type_of_col="header">
-                            <Link to="/"><p>Eng & Product</p></Link>
-                            <Link to="/"><p>Design</p></Link>
-                            <Link to="/"><p>Marketing</p></Link>
-                            <Link to="/"><p>IT</p></Link>
-                        </ListColMenu>
-                        <ListColMenu title="Company size" type_of_col="sample">
-                            <Link to="/"><p>Startups</p></Link>
-                            <Link to="/"><p>Small businesses</p></Link>
-                            <Link to="/"><p>Enterprise</p></Link>
-                        </ListColMenu>
-                        <ListColMenu title="Resources" type_of_col="sample">
-                            <Link to="/"><p>Education</p></Link>
-                            <Link to="/"><p>Personal</p></Link>
-                            <Link to="/"><p>Professional</p></Link>
-                            <Link to="/"><p>AI use cases</p></Link>
-                        </ListColMenu>
+                        <EverySolutionsMenu />
                     </CardRowMenu>
                 </div>
                 {/* Resources menu */}
                 <div ref={resourcesMenuRef} className={(isOpenResourcesMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
                     <CardRowMenu>
-                        <ListColMenu title="Browse" type_of_col="header">
-                            <Link to="/"><p>Templates</p></Link>
-                            <Link to="/"><p>Consultants</p></Link>
-                            <Link to="/"><p>Integrations</p></Link>
-                        </ListColMenu>
-                        <ListColMenu title="Discover" type_of_col="sample">
-                            <Link to="/"><p>What's New</p></Link>
-                            <Link to="/"><p>Customer stories</p></Link>
-                            <Link to="/"><p>Blog</p></Link>
-                            <Link to="/"><p>Webinars</p></Link>
-                        </ListColMenu>
-                        <ListColMenu title="Learn" type_of_col="sample">
-                            <Link to="/"><p>Academy</p></Link>
-                            <Link to="/"><p>Product tours</p></Link>
-                            <Link to="/"><p>Product tours</p></Link>
-                        </ListColMenu>
+                        <EveryResourcesMenu />
                     </CardRowMenu>
                 </div>
             </div>
             {/* small device menu */}
-            <div className={(isOpenSmallDeviceMenu ? "block" : "hidden") + " w-full h-full bg-white pt-3 pl-6.5"}>
+            <div className={(isOpenSmallDeviceMenu ? "block" : "hidden") + " w-full h-full bg-white pl-6.5 [&>button]:my-2.5"}>
                 <button onClick={handleOnClickProductSmallDeviceMenu} className={"flex items-center text-2xl"}><p>Product</p>
                     {!isOpenProductSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
                 </button>
-                <div className={(isOpenProductSmallDeviceMenu ? "block" : "hidden") + " py-2 pr-6 [&>*>*>*]:rounded-md"}>
-                    <EveryProductMune />
-                </div>
+                {
+                    isOpenProductSmallDeviceMenu && (
+                        <div className="py-2">
+                            <EveryProductMune />
+                        </div>
+                    )
+                }
                 <button onClick={handleOnClickAISmallDeviceMenu} className={"flex items-center text-2xl"}><p>AI</p>
                     {!isOpenAISmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
                 </button>
-                <div className={(isOpenAISmallDeviceMenu ? "block" : "hidden") + " py-2"}>
-                    <EveryAIMenu />
-                </div>
+                {
+                    isOpenAISmallDeviceMenu && (
+                        <div className="py-2">
+                            <EveryAIMenu />
+                        </div>
+                    )
+                }
+                <button onClick={handleOnClickSolutionsSmallDeviceMenu} className={"flex items-center text-2xl"}><p>Solutions</p>
+                    {!isOpenSolutionsSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
+                </button>
+                {
+                    isOpenSolutionsSmallDeviceMenu && (
+                        <div className="py-2">
+                            <EverySolutionsMenu />
+                        </div>
+                    )
+                }
+                <button onClick={handleOnClickResourcesSmallDeviceMenu} className={"flex items-center text-2xl"}><p>Resources</p>
+                    {!isOpenResourcesSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
+                </button>
+                {
+                    isOpenResourcesSmallDeviceMenu && (
+                        <div className="py-2">
+                            <EveryResourcesMenu />
+                        </div>
+                    )
+                }
+                <Link to="/"><p className="text-2xl py-2.5">Enterprise</p></Link>
+                <Link to="/"><p className="text-2xl py-2.5">Pricing</p></Link>
                 <div className="fixed bottom-0 ">
                     Hello
                 </div>
@@ -372,6 +395,53 @@ const EveryAIMenu: React.FC = () => {
                     </Link>
                 </ListColMenu>
             </div>
+        </>
+    )
+}
+
+const EverySolutionsMenu: React.FC = () => {
+    return (
+        <>
+            <ListColMenu title="Teams" type_of_col="header">
+                <Link to="/"><p>Eng & Product</p></Link>
+                <Link to="/"><p>Design</p></Link>
+                <Link to="/"><p>Marketing</p></Link>
+                <Link to="/"><p>IT</p></Link>
+            </ListColMenu>
+            <ListColMenu title="Company size" type_of_col="sample">
+                <Link to="/"><p>Startups</p></Link>
+                <Link to="/"><p>Small businesses</p></Link>
+                <Link to="/"><p>Enterprise</p></Link>
+            </ListColMenu>
+            <ListColMenu title="Resources" type_of_col="sample">
+                <Link to="/"><p>Education</p></Link>
+                <Link to="/"><p>Personal</p></Link>
+                <Link to="/"><p>Professional</p></Link>
+                <Link to="/"><p>AI use cases</p></Link>
+            </ListColMenu>
+        </>
+    )
+}
+
+const EveryResourcesMenu: React.FC = () => {
+    return (
+        <>
+            <ListColMenu title="Browse" type_of_col="header">
+                <Link to="/"><p>Templates</p></Link>
+                <Link to="/"><p>Consultants</p></Link>
+                <Link to="/"><p>Integrations</p></Link>
+            </ListColMenu>
+            <ListColMenu title="Discover" type_of_col="sample">
+                <Link to="/"><p>What's New</p></Link>
+                <Link to="/"><p>Customer stories</p></Link>
+                <Link to="/"><p>Blog</p></Link>
+                <Link to="/"><p>Webinars</p></Link>
+            </ListColMenu>
+            <ListColMenu title="Learn" type_of_col="sample">
+                <Link to="/"><p>Academy</p></Link>
+                <Link to="/"><p>Product tours</p></Link>
+                <Link to="/"><p>Product tours</p></Link>
+            </ListColMenu>
         </>
     )
 }
