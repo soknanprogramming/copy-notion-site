@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import ume_logo from "../assets/image/logo_ume.png"
 import ume_welcome from "../assets/image/ume-welcome.png"
@@ -22,6 +23,7 @@ import { FiX } from "react-icons/fi";
 import ProductCard from "./TopBar/ProductCard";
 import ListColMenu from "./TopBar/ListColMenu";
 import CardRowMenu from "./TopBar/CardRowMenu";
+import { BiCalendar } from "react-icons/bi";
 
 interface Prop {
     setIsShowBody: React.Dispatch<React.SetStateAction<boolean>>;
@@ -42,15 +44,18 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
     const [isOpenSolutionsMenu, setIsOpenSolutionsMenu] = useState<boolean>(false);
     const [isOpenResourcesMenu, setIsOpenResourcesMenu] = useState<boolean>(false);
 
+    // handleEnterOutside
     useEffect(() => {
         const handleEnterOutside = (event: MouseEvent) => {
-            if (
-                productMenuRef.current && !productMenuRef.current.contains(event.target as Node) &&
-                aiMenuRef.current && !aiMenuRef.current.contains(event.target as Node) &&
-                solutionsMenuRef.current && !solutionsMenuRef.current.contains(event.target as Node) &&
-                resourcesMenuRef.current && !resourcesMenuRef.current.contains(event.target as Node) &&
-                menuRef.current && !menuRef.current.contains(event.target as Node)
-            ) {
+            const target = event.target as Node;
+
+            const isOutsideProduct = !productMenuRef.current || !productMenuRef.current.contains(target);
+            const isOutsideAI = !aiMenuRef.current || !aiMenuRef.current.contains(target);
+            const isOutsideSolutions = !solutionsMenuRef.current || !solutionsMenuRef.current.contains(target);
+            const isOutsideResources = !resourcesMenuRef.current || !resourcesMenuRef.current.contains(target);
+            const isOutsideMenu = !menuRef.current || !menuRef.current.contains(target);
+
+            if (isOutsideProduct && isOutsideAI && isOutsideSolutions && isOutsideResources && isOutsideMenu) {
                 setIsOpenProductMenu(false);
                 setIsOpenAIMenu(false);
                 setIsOpenSolutionsMenu(false);
@@ -63,6 +68,7 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
 
     }, [isOpenProductMenu, isOpenAIMenu, isOpenSolutionsMenu, isOpenResourcesMenu])
 
+    // handleResize
     useEffect(() => {
         const mq = window.matchMedia('(min-width: 1280px)')
         const handler = (e: MediaQueryListEvent) => {
@@ -75,6 +81,7 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
         mq.addEventListener('change', handler)
         return () => mq.removeEventListener('change', handler)
     }, [setIsShowBody])
+
 
 
     function handleMouseOverProductMenu() {
@@ -130,8 +137,14 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
     const [isOpenAISmallDeviceMenu, setIsOpenAISmallDeviceMenu] = useState<boolean>(false);
     const [isOpenSolutionsSmallDeviceMenu, setIsOpenSolutionsSmallDeviceMenu] = useState<boolean>(false);
     const [isOpenResourcesSmallDeviceMenu, setIsOpenResourcesSmallDeviceMenu] = useState<boolean>(false);
+    const downloadAppSmallDeviceMenuRef = useRef<HTMLDivElement>(null);
+    const [downloadAppSmallHigh, setDownloadAppSmallHigh] = useState<number | undefined>();
 
 
+    // highDownloadAppSmallDevice
+    useEffect(() => {
+        setDownloadAppSmallHigh(downloadAppSmallDeviceMenuRef.current?.clientHeight)
+    }, [isOpenProductSmallDeviceMenu, isOpenAISmallDeviceMenu, isOpenSolutionsSmallDeviceMenu, isOpenResourcesSmallDeviceMenu])
 
 
     function handleOnClickProductSmallDeviceMenu() {
@@ -162,6 +175,16 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
         setIsOpenResourcesSmallDeviceMenu(prev => !prev)
     }
 
+    function checkIsOneOfSmallDeviceMenuOpen(): boolean {
+        if (isOpenProductSmallDeviceMenu || isOpenAISmallDeviceMenu || isOpenSolutionsSmallDeviceMenu || isOpenResourcesSmallDeviceMenu) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+
+
 
     return (
         <>
@@ -172,21 +195,25 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                     </div>
                     {/* menu center */}
                     <div ref={menuRef} className="hidden xl:flex h-full text-sm items-center gap-1 *:hover:bg-gray-300 *:px-2 *:py-1 *:hover:rounded-sm">
-                        <div onMouseEnter={handleMouseOverProductMenu} className={"flex items-center " + (isOpenProductMenu && "bg-gray-300 rounded-sm")}><p>Product</p>
+                        <div onMouseEnter={handleMouseOverProductMenu} className={"flex items-center hover:cursor-pointer " + (isOpenProductMenu && "bg-gray-300 rounded-sm")}>
+                            <p>Product</p>
                             {!isOpenProductMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
                         </div>
-                        <div onMouseOver={handleMouseOverAIMenu} className={"flex items-center " + (isOpenAIMenu && "bg-gray-300 rounded-sm")}><p>AI</p>
+                        <div onMouseOver={handleMouseOverAIMenu} className={"flex items-center hover:cursor-pointer " + (isOpenAIMenu && "bg-gray-300 rounded-sm")}>
+                            <p>AI</p>
                             {!isOpenAIMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
                         </div>
-                        <div onMouseOver={handleMouseOverSolutionsMenu} className={"flex items-center " + (isOpenSolutionsMenu && "bg-gray-300 rounded-sm")}><p>Solutions</p>
+                        <div onMouseOver={handleMouseOverSolutionsMenu} className={"flex items-center hover:cursor-pointer " + (isOpenSolutionsMenu && "bg-gray-300 rounded-sm")}>
+                            <p>Solutions</p>
                             {!isOpenSolutionsMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
                         </div>
-                        <div onMouseOver={handleMouseOverResourcesMenu} className={"flex items-center " + (isOpenResourcesMenu && "bg-gray-300 rounded-sm")}><p>Resources</p>
+                        <div onMouseOver={handleMouseOverResourcesMenu} className={"flex items-center hover:cursor-pointer " + (isOpenResourcesMenu && "bg-gray-300 rounded-sm")}>
+                            <p>Resources</p>
                             {!isOpenResourcesMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
                         </div>
-                        <div onMouseOver={handleMouseOverEnterpriseMenu}><p>Enterprise</p></div>
-                        <div onMouseOver={handleMouseOverPricingMenu}><p>Pricing</p></div>
-                        <div onMouseOver={handleMouseOverRequestADemoMenu}><p>Request a demo</p></div>
+                        <div className="hover:cursor-pointer" onMouseOver={handleMouseOverEnterpriseMenu}><p>Enterprise</p></div>
+                        <div className="hover:cursor-pointer" onMouseOver={handleMouseOverPricingMenu}><p>Pricing</p></div>
+                        <div className="hover:cursor-pointer" onMouseOver={handleMouseOverRequestADemoMenu}><p>Request a demo</p></div>
                     </div>
                     <div className="flex gap-4 -ml-35">
                         <button className="hidden md:block hover:bg-gray-300 py-1 px-2 rounded-md">Log in</button>
@@ -203,49 +230,63 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                     </div>
                 </div>
                 {/* product menu */}
-                <div ref={productMenuRef} className={(isOpenProductMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
-                    <div className={"justify-center bg-white items-center flex flex-col px-3 border w-2xl mx-auto rounded-2xl"}>
-                        <div className="flex w-full my-3 justify-between bg-gray-100 p-3 rounded-md">
-                            <div className="flex items-center gap-2 group">
-                                <div>
-                                    <img className="size-10" src={ume_logo} alt="" />
+                <AnimatePresence>
+                    {   
+                        
+                        isOpenProductMenu && (
+                            <motion.div 
+                                ref={productMenuRef} 
+                                initial={{ opacity: 0, y: -10}}
+                                animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
+                                exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}  
+                                className={" w-2xl fixed right-0 pt-3 left-0 mx-auto"}
+                            >
+                                <div className={"justify-center bg-white items-center flex flex-col px-3 border w-2xl mx-auto rounded-2xl"}>
+                                    <div className="flex w-full my-3 justify-between bg-gray-100 p-3 rounded-md">
+                                        <div className="flex items-center gap-2 group">
+                                            <div>
+                                                <img className="size-10" src={ume_logo} alt="" />
+                                            </div>
+                                            <div>
+                                                <h1 className="text-2xl group-hover:underline underline-offset-2">Notion</h1>
+                                                <p className="text-xs text-gray-500">Your AI workspace</p>
+                                            </div>
+                                        </div>
+                                        <div className="*:flex *:gap-2 *:items-center *:m-2 *:text-sm">
+                                            <div className="group">
+                                                <FaRegCalendarAlt />
+                                                <p className="group-hover:underline underline-offset-2">Notion Calendar</p>
+                                            </div>
+                                            <div className="group">
+                                                <FaMailchimp />
+                                                <p className="group-hover:underline underline-offset-2">Notion Mail</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/* show product */}
+                                    <div className="flex w-full justify-between">
+                                        <EveryProductMune />
+                                    </div>
+                                    <hr className="h-px my-2 bg-neutral-quaternary border-0" />
+                                    {/* last session */}
+                                    <div className="flex *:flex *:items-center w-full justify-between mb-5">
+                                        <div className="">
+                                            <div className="px-2"><BsBoxSeam /></div>
+                                            <div>Claude Opus 4.6.</div>
+                                            <div className="flex items-center"><span className="text-blue-500 hover:underline underline-offset-2">&nbsp;See what's new</span><GrFormNextLink /></div>
+                                        </div>
+                                        <div>
+                                            <div className="px-2"><GoDesktopDownload /></div>
+                                            <div>Download the</div>
+                                            <div className="flex items-center"><span className="text-blue-500 hover:underline underline-offset-2">&nbsp;Notion App</span><GrFormNextLink /></div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h1 className="text-2xl group-hover:underline underline-offset-2">Notion</h1>
-                                    <p className="text-xs text-gray-500">Your AI workspace</p>
-                                </div>
-                            </div>
-                            <div className="*:flex *:gap-2 *:items-center *:m-2 *:text-sm">
-                                <div className="group">
-                                    <FaRegCalendarAlt />
-                                    <p className="group-hover:underline underline-offset-2">Notion Calendar</p>
-                                </div>
-                                <div className="group">
-                                    <FaMailchimp />
-                                    <p className="group-hover:underline underline-offset-2">Notion Mail</p>
-                                </div>
-                            </div>
-                        </div>
-                        {/* show product */}
-                        <div className="flex w-full justify-between">
-                            <EveryProductMune />
-                        </div>
-                        <hr className="h-px my-2 bg-neutral-quaternary border-0" />
-                        {/* last session */}
-                        <div className="flex *:flex *:items-center w-full justify-between mb-5">
-                            <div className="">
-                                <div className="px-2"><BsBoxSeam /></div>
-                                <div>Claude Opus 4.6.</div>
-                                <div className="flex items-center"><span className="text-blue-500 hover:underline underline-offset-2">&nbsp;See what's new</span><GrFormNextLink /></div>
-                            </div>
-                            <div>
-                                <div className="px-2"><GoDesktopDownload /></div>
-                                <div>Download the</div>
-                                <div className="flex items-center"><span className="text-blue-500 hover:underline underline-offset-2">&nbsp;Notion App</span><GrFormNextLink /></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            </motion.div>
+                        )
+                        
+                    }
+                </AnimatePresence>
                 {/* AI menu */}
                 <div ref={aiMenuRef} className={(isOpenAIMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
                     <div className="bg-white justify-between flex p-3 border w-2xl *:w-55 mx-auto rounded-2xl">
@@ -269,53 +310,78 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                 </div>
             </div>
             {/* small device menu */}
-            <div className={(isOpenSmallDeviceMenu ? "block" : "hidden") + " w-full h-full bg-white pl-6.5 [&>button]:my-2.5"}>
-                <button onClick={handleOnClickProductSmallDeviceMenu} className={"flex items-center text-2xl"}><p>Product</p>
-                    {!isOpenProductSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
-                </button>
-                {
-                    isOpenProductSmallDeviceMenu && (
-                        <div className="py-2">
-                            <EveryProductMune />
+            {isOpenSmallDeviceMenu && (
+                <div className={"w-full h-full bg-white "}>
+                    <div className="pl-6.5 [&>button]:my-2.5 pr-5">
+                        <button onClick={handleOnClickProductSmallDeviceMenu} className={"flex items-center text-2xl hover:cursor-pointer " + ((checkIsOneOfSmallDeviceMenuOpen() && !isOpenProductSmallDeviceMenu) && "text-gray-400")}><p>Product</p>
+                            {!isOpenProductSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
+                        </button>
+                        {
+                            isOpenProductSmallDeviceMenu && (
+                                <div className="py-2">
+                                    <EveryProductMune />
+                                </div>
+                            )
+                        }
+                        <button onClick={handleOnClickAISmallDeviceMenu} className={"flex items-center text-2xl hover:cursor-pointer " + ((checkIsOneOfSmallDeviceMenuOpen() && !isOpenAISmallDeviceMenu) && "text-gray-400")}><p>AI</p>
+                            {!isOpenAISmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
+                        </button>
+                        {
+                            isOpenAISmallDeviceMenu && (
+                                <div className="py-2">
+                                    <EveryAIMenu />
+                                </div>
+                            )
+                        }
+                        <button onClick={handleOnClickSolutionsSmallDeviceMenu} className={"flex items-center text-2xl hover:cursor-pointer " + ((checkIsOneOfSmallDeviceMenuOpen() && !isOpenSolutionsSmallDeviceMenu) && "text-gray-400")}><p>Solutions</p>
+                            {!isOpenSolutionsSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
+                        </button>
+                        {
+                            isOpenSolutionsSmallDeviceMenu && (
+                                <div className="py-2">
+                                    <EverySolutionsMenu />
+                                </div>
+                            )
+                        }
+                        <button onClick={handleOnClickResourcesSmallDeviceMenu} className={"flex items-center text-2xl hover:cursor-pointer " + ((checkIsOneOfSmallDeviceMenuOpen() && !isOpenResourcesSmallDeviceMenu) && "text-gray-400")}><p>Resources</p>
+                            {!isOpenResourcesSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
+                        </button>
+                        {
+                            isOpenResourcesSmallDeviceMenu && (
+                                <div className="py-2">
+                                    <EveryResourcesMenu />
+                                </div>
+                            )
+                        }
+                        <Link to="/"><p className={"text-2xl py-2.5 hover:cursor-pointer " + (checkIsOneOfSmallDeviceMenuOpen() && "text-gray-400")}>Enterprise</p></Link>
+                        <Link to="/"><p className={"text-2xl py-2.5 hover:cursor-pointer " + (checkIsOneOfSmallDeviceMenuOpen() && "text-gray-400")}>Pricing</p></Link>
+                    </div>
+                    {
+                        checkIsOneOfSmallDeviceMenuOpen() && (
+                            <ShowOurProductInSmallDeviceMenu />
+                        )
+                    }
+                    <div style={{ height: downloadAppSmallHigh }} />
+                    {/* download app*/}
+                    <div ref={downloadAppSmallDeviceMenuRef} className="fixed bottom-0">
+                        {
+                            !checkIsOneOfSmallDeviceMenuOpen() && (
+                                <ShowOurProductInSmallDeviceMenu />
+                            )
+                        }
+                        <div className="flex flex-col md:flex-row border-t w-screen text-center **:rounded-sm">
+                            <Link to="/" className="flex-1 px-5">
+                                <button className="bg-blue-600 hover:bg-blue-700 mt-5 md:mb-5 text-white w-full py-2" >Download app</button>
+                            </Link>
+                            <div className="h-3 md:hidden block" />
+                            <Link to="/" className="flex-1 px-5">
+                                <button className="bg-blue-200 hover:bg-blue-100 mb-5 md:mt-5 text-blue-600 w-full py-2">Log in</button>
+                            </Link>
                         </div>
-                    )
-                }
-                <button onClick={handleOnClickAISmallDeviceMenu} className={"flex items-center text-2xl"}><p>AI</p>
-                    {!isOpenAISmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
-                </button>
-                {
-                    isOpenAISmallDeviceMenu && (
-                        <div className="py-2">
-                            <EveryAIMenu />
-                        </div>
-                    )
-                }
-                <button onClick={handleOnClickSolutionsSmallDeviceMenu} className={"flex items-center text-2xl"}><p>Solutions</p>
-                    {!isOpenSolutionsSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
-                </button>
-                {
-                    isOpenSolutionsSmallDeviceMenu && (
-                        <div className="py-2">
-                            <EverySolutionsMenu />
-                        </div>
-                    )
-                }
-                <button onClick={handleOnClickResourcesSmallDeviceMenu} className={"flex items-center text-2xl"}><p>Resources</p>
-                    {!isOpenResourcesSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
-                </button>
-                {
-                    isOpenResourcesSmallDeviceMenu && (
-                        <div className="py-2">
-                            <EveryResourcesMenu />
-                        </div>
-                    )
-                }
-                <Link to="/"><p className="text-2xl py-2.5">Enterprise</p></Link>
-                <Link to="/"><p className="text-2xl py-2.5">Pricing</p></Link>
-                <div className="fixed bottom-0 ">
-                    Hello
+                    </div>
                 </div>
-            </div>
+            )}
+
         </>
 
 
@@ -443,5 +509,23 @@ const EveryResourcesMenu: React.FC = () => {
                 <Link to="/"><p>Product tours</p></Link>
             </ListColMenu>
         </>
+    )
+}
+
+const ShowOurProductInSmallDeviceMenu: React.FC = () => {
+    return (
+        <div className="mb-4 px-5">
+            <div className="bg-gray-200 px-2 rounded-sm">
+                <div className="flex py-1.5 group">
+                    <img src={ume_logo} className="size-6 mr-2.5" />
+                    <h1 className="group-hover:underline underline-offset-2">Notion</h1>
+                    <p className="hidden">Your AI workspace</p>
+                </div>
+                <div>
+                    <div className="flex py-1.5 group"><BiCalendar className="size-6 mr-2.5" /><p className="group-hover:underline underline-offset-2">Notion Calendar</p></div>
+                    <div className="flex py-1.5 group"><FaMailchimp className="size-6 mr-2.5" /><p className="group-hover:underline underline-offset-2">Notion Mail</p></div>
+                </div>
+            </div>
+        </div>
     )
 }
