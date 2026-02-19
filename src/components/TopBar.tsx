@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { Link } from "react-router-dom";
 import ume_logo from "../assets/image/logo_ume.png"
 import ume_welcome from "../assets/image/ume-welcome.png"
@@ -44,9 +45,32 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
     const [isOpenSolutionsMenu, setIsOpenSolutionsMenu] = useState<boolean>(false);
     const [isOpenResourcesMenu, setIsOpenResourcesMenu] = useState<boolean>(false);
 
+    const [isScrolledMoreThan66px, setIsScrolledMoreThan66px] = useState<boolean>(false);
+
+    // handleScroll
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 66) { // 16.5 * 4 = 66px (Tailwind spacing scale)
+                setIsScrolledMoreThan66px(true);
+            } else {
+                setIsScrolledMoreThan66px(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     // handleEnterOutside
     useEffect(() => {
+        const closeAllMenus = () => {
+            setIsOpenProductMenu(false);
+            setIsOpenAIMenu(false);
+            setIsOpenSolutionsMenu(false);
+            setIsOpenResourcesMenu(false);
+        }
         const handleEnterOutside = (event: MouseEvent) => {
+
             const target = event.target as Node;
 
             const isOutsideProduct = !productMenuRef.current || !productMenuRef.current.contains(target);
@@ -56,15 +80,23 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
             const isOutsideMenu = !menuRef.current || !menuRef.current.contains(target);
 
             if (isOutsideProduct && isOutsideAI && isOutsideSolutions && isOutsideResources && isOutsideMenu) {
-                setIsOpenProductMenu(false);
-                setIsOpenAIMenu(false);
-                setIsOpenSolutionsMenu(false);
-                setIsOpenResourcesMenu(false);
+                closeAllMenus()
             }
         }
 
+        const handleMouseLeaveWindow = (event: MouseEvent) => {
+            if (!event.relatedTarget) {
+                closeAllMenus()
+            }
+        };
+
         document.addEventListener('mouseover', handleEnterOutside);
-        return () => document.removeEventListener('mouseover', handleEnterOutside);
+        document.addEventListener("mouseleave", handleMouseLeaveWindow);
+
+        return () => {
+            document.removeEventListener('mouseover', handleEnterOutside);
+            document.removeEventListener("mouseleave", handleMouseLeaveWindow);
+        }
 
     }, [isOpenProductMenu, isOpenAIMenu, isOpenSolutionsMenu, isOpenResourcesMenu])
 
@@ -183,13 +215,33 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
         }
     }
 
+    // animate
+    const containerVariants: Variants = {
+        hidden: {},
+        show: {
+            transition: {
+                staggerChildren: 0.07,
+            },
+        },
+    };
 
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: 12 },
+        show: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.3,
+                ease: "easeOut",
+            },
+        },
+    };
 
 
     return (
         <>
             <div className="sticky bg-white top-0">
-                <div className={(!isOpenSmallDeviceMenu && "border-b-gray-300 border-b") + " h-16.5 flex justify-between items-center px-5"}>
+                <div className={(!isOpenSmallDeviceMenu && isScrolledMoreThan66px && "border-b-gray-300 border-b") + " h-16.5 flex justify-between items-center px-5"}>
                     <div>
                         <img className="size-8" src={ume_logo} />
                     </div>
@@ -229,16 +281,15 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                         </button>
                     </div>
                 </div>
-                {/* product menu */}
                 <AnimatePresence>
-                    {   
-                        
+                    {/* product menu */}
+                    {
                         isOpenProductMenu && (
-                            <motion.div 
-                                ref={productMenuRef} 
-                                initial={{ opacity: 0, y: -10}}
+                            <motion.div
+                                ref={productMenuRef}
+                                initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
-                                exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}  
+                                exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
                                 className={" w-2xl fixed right-0 pt-3 left-0 mx-auto"}
                             >
                                 <div className={"justify-center bg-white items-center flex flex-col px-3 border w-2xl mx-auto rounded-2xl"}>
@@ -267,9 +318,8 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                                     <div className="flex w-full justify-between">
                                         <EveryProductMune />
                                     </div>
-                                    <hr className="h-px my-2 bg-neutral-quaternary border-0" />
                                     {/* last session */}
-                                    <div className="flex *:flex *:items-center w-full justify-between mb-5">
+                                    <div className="flex *:flex *:items-center w-full justify-between mb-5 border-t border-gray-300 pt-3 mt-2">
                                         <div className="">
                                             <div className="px-2"><BsBoxSeam /></div>
                                             <div>Claude Opus 4.6.</div>
@@ -284,78 +334,170 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                                 </div>
                             </motion.div>
                         )
-                        
+
                     }
                 </AnimatePresence>
-                {/* AI menu */}
-                <div ref={aiMenuRef} className={(isOpenAIMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
-                    <div className="bg-white justify-between flex p-3 border w-2xl *:w-55 mx-auto rounded-2xl">
-                        <div className="self-center">
-                            <img className="size-50" src={ume_welcome} alt="" />
-                        </div>
-                        <EveryAIMenu />
-                    </div>
-                </div>
-                {/* Solutions menu */}
-                <div ref={solutionsMenuRef} className={(isOpenSolutionsMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
-                    <CardRowMenu>
-                        <EverySolutionsMenu />
-                    </CardRowMenu>
-                </div>
-                {/* Resources menu */}
-                <div ref={resourcesMenuRef} className={(isOpenResourcesMenu ? "block" : "hidden") + " w-2xl fixed right-0 pt-3 left-0 mx-auto"}>
-                    <CardRowMenu>
-                        <EveryResourcesMenu />
-                    </CardRowMenu>
-                </div>
+                <AnimatePresence>
+                    {/* AI menu */}
+                    {
+                        isOpenAIMenu && (
+                            <motion.div
+                                ref={aiMenuRef}
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
+                                exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
+                                className={" w-2xl fixed right-0 pt-3 left-0 mx-auto"}
+                            >
+                                <div className="bg-white justify-between flex p-3 border w-2xl *:w-55 mx-auto rounded-2xl">
+                                    <div className="self-center">
+                                        <img className="size-50" src={ume_welcome} alt="" />
+                                    </div>
+                                    <EveryAIMenu />
+                                </div>
+                            </motion.div>
+                        )
+                    }
+                </AnimatePresence>
+                <AnimatePresence>
+                    {/* Solutions menu */}
+                    {
+                        isOpenSolutionsMenu && (
+                            <motion.div
+                                ref={solutionsMenuRef}
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
+                                exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
+                                className={" w-2xl fixed right-0 pt-3 left-0 mx-auto"}
+                            >
+                                <CardRowMenu>
+                                    <EverySolutionsMenu />
+                                </CardRowMenu>
+                            </motion.div>
+                        )
+                    }
+                </AnimatePresence>
+                <AnimatePresence>
+                    {/* Resources menu */}
+                    {
+                        isOpenResourcesMenu && (
+                            <motion.div
+                                ref={resourcesMenuRef}
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
+                                exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
+                                className={" w-2xl fixed right-0 pt-3 left-0 mx-auto"}
+                            >
+                                <CardRowMenu>
+                                    <EveryResourcesMenu />
+                                </CardRowMenu>
+                            </motion.div>
+                        )
+                    }
+
+                </AnimatePresence>
             </div>
             {/* small device menu */}
             {isOpenSmallDeviceMenu && (
                 <div className={"w-full h-full bg-white "}>
-                    <div className="pl-6.5 [&>button]:my-2.5 pr-5">
-                        <button onClick={handleOnClickProductSmallDeviceMenu} className={"flex items-center text-2xl hover:cursor-pointer " + ((checkIsOneOfSmallDeviceMenuOpen() && !isOpenProductSmallDeviceMenu) && "text-gray-400")}><p>Product</p>
+                    <motion.div
+                        className="pl-6.5 [&>button]:my-2.5 pr-5"
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="show"
+                    >
+                        <motion.button
+                            onClick={handleOnClickProductSmallDeviceMenu}
+                            className={"flex items-center text-2xl hover:cursor-pointer " + ((checkIsOneOfSmallDeviceMenuOpen() && !isOpenProductSmallDeviceMenu) && "text-gray-400")}
+                            variants={itemVariants}
+                        >
+                            <p>Product</p>
                             {!isOpenProductSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
-                        </button>
+                        </motion.button>
                         {
                             isOpenProductSmallDeviceMenu && (
-                                <div className="py-2">
+                                <motion.div
+                                    className="py-2"
+                                    initial={{ opacity: 0, y: -5 }}
+                                    animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
+                                >
                                     <EveryProductMune />
-                                </div>
+                                </motion.div>
                             )
                         }
-                        <button onClick={handleOnClickAISmallDeviceMenu} className={"flex items-center text-2xl hover:cursor-pointer " + ((checkIsOneOfSmallDeviceMenuOpen() && !isOpenAISmallDeviceMenu) && "text-gray-400")}><p>AI</p>
+                        <motion.button
+                            onClick={handleOnClickAISmallDeviceMenu}
+                            className={"flex items-center text-2xl hover:cursor-pointer " + ((checkIsOneOfSmallDeviceMenuOpen() && !isOpenAISmallDeviceMenu) && "text-gray-400")}
+                            variants={itemVariants}
+                        >
+                            <p>AI</p>
                             {!isOpenAISmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
-                        </button>
+                        </motion.button>
                         {
                             isOpenAISmallDeviceMenu && (
-                                <div className="py-2">
+                                <motion.div
+                                    className="py-2"
+                                    initial={{ opacity: 0, y: -5 }}
+                                    animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
+                                >
                                     <EveryAIMenu />
-                                </div>
+                                </motion.div>
                             )
                         }
-                        <button onClick={handleOnClickSolutionsSmallDeviceMenu} className={"flex items-center text-2xl hover:cursor-pointer " + ((checkIsOneOfSmallDeviceMenuOpen() && !isOpenSolutionsSmallDeviceMenu) && "text-gray-400")}><p>Solutions</p>
+                        <motion.button
+                            onClick={handleOnClickSolutionsSmallDeviceMenu}
+                            className={"flex items-center text-2xl hover:cursor-pointer " + ((checkIsOneOfSmallDeviceMenuOpen() && !isOpenSolutionsSmallDeviceMenu) && "text-gray-400")}
+                            variants={itemVariants}
+                        >
+                            <p>Solutions</p>
                             {!isOpenSolutionsSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
-                        </button>
+                        </motion.button>
                         {
                             isOpenSolutionsSmallDeviceMenu && (
-                                <div className="py-2">
+                                <motion.div
+                                    className="py-2"
+                                    initial={{ opacity: 0, y: -5 }}
+                                    animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
+                                >
                                     <EverySolutionsMenu />
-                                </div>
+                                </motion.div>
                             )
                         }
-                        <button onClick={handleOnClickResourcesSmallDeviceMenu} className={"flex items-center text-2xl hover:cursor-pointer " + ((checkIsOneOfSmallDeviceMenuOpen() && !isOpenResourcesSmallDeviceMenu) && "text-gray-400")}><p>Resources</p>
+                        <motion.button
+                            onClick={handleOnClickResourcesSmallDeviceMenu}
+                            className={"flex items-center text-2xl hover:cursor-pointer " + ((checkIsOneOfSmallDeviceMenuOpen() && !isOpenResourcesSmallDeviceMenu) && "text-gray-400")}
+                            variants={itemVariants}
+                        >
+                            <p>Resources</p>
                             {!isOpenResourcesSmallDeviceMenu ? <IoIosArrowDown className="m-1.5" /> : <IoIosArrowUp className="m-1.5" />}
-                        </button>
+                        </motion.button>
                         {
                             isOpenResourcesSmallDeviceMenu && (
-                                <div className="py-2">
+                                <motion.div
+                                    className="py-2"
+                                    initial={{ opacity: 0, y: -5 }}
+                                    animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
+                                >
                                     <EveryResourcesMenu />
-                                </div>
+                                </motion.div>
                             )
                         }
-                        <Link to="/"><p className={"text-2xl py-2.5 hover:cursor-pointer " + (checkIsOneOfSmallDeviceMenuOpen() && "text-gray-400")}>Enterprise</p></Link>
-                        <Link to="/"><p className={"text-2xl py-2.5 hover:cursor-pointer " + (checkIsOneOfSmallDeviceMenuOpen() && "text-gray-400")}>Pricing</p></Link>
-                    </div>
+                        <Link to="/">
+                            <motion.p
+                                className={"text-2xl py-2.5 hover:cursor-pointer " + (checkIsOneOfSmallDeviceMenuOpen() && "text-gray-400")}
+                                variants={itemVariants}
+                            >
+                                Enterprise
+                            </motion.p>
+                        </Link>
+                        <Link to="/">
+                            <motion.p
+                                className={"text-2xl py-2.5 hover:cursor-pointer " + (checkIsOneOfSmallDeviceMenuOpen() && "text-gray-400")}
+                                variants={itemVariants}
+                            >
+                                Pricing
+                            </motion.p>
+                        </Link>
+                    </motion.div>
                     {
                         checkIsOneOfSmallDeviceMenuOpen() && (
                             <ShowOurProductInSmallDeviceMenu />
@@ -369,7 +511,7 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                                 <ShowOurProductInSmallDeviceMenu />
                             )
                         }
-                        <div className="flex flex-col md:flex-row border-t w-screen text-center **:rounded-sm">
+                        <div className="flex flex-col md:flex-row border-t border-gray-300 w-screen text-center **:rounded-sm bg-white">
                             <Link to="/" className="flex-1 px-5">
                                 <button className="bg-blue-600 hover:bg-blue-700 mt-5 md:mb-5 text-white w-full py-2" >Download app</button>
                             </Link>
@@ -514,18 +656,24 @@ const EveryResourcesMenu: React.FC = () => {
 
 const ShowOurProductInSmallDeviceMenu: React.FC = () => {
     return (
-        <div className="mb-4 px-5">
-            <div className="bg-gray-200 px-2 rounded-sm">
-                <div className="flex py-1.5 group">
-                    <img src={ume_logo} className="size-6 mr-2.5" />
-                    <h1 className="group-hover:underline underline-offset-2">Notion</h1>
-                    <p className="hidden">Your AI workspace</p>
+        <motion.div
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
+            className="mb-4 px-5"
+        >
+            <div className="bg-gray-200 md:flex px-4 py-2 rounded-sm">
+                <div className="flex md:flex-1 md:items-center py-1.5 group">
+                    <img src={ume_logo} className="size-6 md:size-14 mr-2.5" />
+                    <div>
+                        <h1 className="group-hover:underline md:text-lg underline-offset-2">Notion</h1>
+                        <p className="hidden md:block text-xs text-gray-500">Your AI workspace</p>
+                    </div>
                 </div>
-                <div>
+                <div className="md:flex-1">
                     <div className="flex py-1.5 group"><BiCalendar className="size-6 mr-2.5" /><p className="group-hover:underline underline-offset-2">Notion Calendar</p></div>
                     <div className="flex py-1.5 group"><FaMailchimp className="size-6 mr-2.5" /><p className="group-hover:underline underline-offset-2">Notion Mail</p></div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     )
 }
