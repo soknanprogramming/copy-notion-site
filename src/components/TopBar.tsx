@@ -7,24 +7,17 @@ import ume_welcome from "../assets/image/ume-welcome.png"
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { FaMailchimp } from "react-icons/fa";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { SiGotomeeting } from "react-icons/si";
-import { MdOutlineSupportAgent } from "react-icons/md";
-import { MdSecurity } from "react-icons/md";
-import { MdIntegrationInstructions } from "react-icons/md";
-import { SiGoogledocs } from "react-icons/si";
-import { FaSearchDollar } from "react-icons/fa";
-import { AiOutlineProduct } from "react-icons/ai";
-import { GiGiftOfKnowledge } from "react-icons/gi";
-import { GiBrain } from "react-icons/gi";
 import { GrFormNextLink } from "react-icons/gr";
 import { GoDesktopDownload } from "react-icons/go";
 import { BsBoxSeam } from "react-icons/bs";
 import { LuMenu } from "react-icons/lu";
 import { FiX } from "react-icons/fi";
-import ProductCard from "./TopBar/ProductCard";
-import ListColMenu from "./TopBar/ListColMenu";
 import CardRowMenu from "./TopBar/CardRowMenu";
-import { BiCalendar } from "react-icons/bi";
+import EveryProductMune from "./TopBar/EveryProductMune";
+import EveryAIMenu from "./TopBar/EveryAIMenu";
+import EverySolutionsMenu from "./TopBar/EverySolutionsMenu";
+import EveryResourcesMenu from "./TopBar/EveryResourcesMenu";
+import ShowOurProductInSmallDeviceMenu from "./TopBar/ShowOurProductInSmallDeviceMenu";
 
 interface Prop {
     setIsShowBody: React.Dispatch<React.SetStateAction<boolean>>;
@@ -532,148 +525,3 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
 
 
 export default TopBar;
-
-const EveryProductMune: React.FC = () => {
-    return (
-        <>
-            <div>
-                <ProductCard title="Notion AI" description="AI tools for work">
-                    <GiBrain />
-                </ProductCard>
-                <ProductCard title="Agents" description="Automate busywork">
-                    <MdOutlineSupportAgent />
-                </ProductCard>
-                <ProductCard title="AI Meeting Notes" description="Perfectly written by AI">
-                    <SiGotomeeting />
-                </ProductCard>
-                <ProductCard title="Enterprise Search" description="Find answers instantly">
-                    <FaSearchDollar />
-                </ProductCard>
-            </div>
-            <div>
-                <ProductCard title="Knowledge Base" description="Centralize your knowledge">
-                    <GiGiftOfKnowledge />
-                </ProductCard>
-                <ProductCard title="Docs" description="Simple and powerful">
-                    <SiGoogledocs />
-                </ProductCard>
-                <ProductCard title="Product" description="Manage any project">
-                    <AiOutlineProduct />
-                </ProductCard>
-            </div>
-            <div>
-                <ProductCard title="Integrations" description="Connect your apps">
-                    <MdIntegrationInstructions />
-                </ProductCard>
-                <ProductCard title="Security" description="Safe and scalable">
-                    <MdSecurity />
-                </ProductCard>
-            </div>
-        </>
-    )
-}
-
-const EveryAIMenu: React.FC = () => {
-    return (
-        <>
-            <div>
-                <ListColMenu title="AI features" type_of_col="feature">
-                    <ProductCard title="Notion AI" description="AI tools for work">
-                        <GiBrain />
-                    </ProductCard>
-                    <ProductCard title="Agents" description="Automate busywork">
-                        <MdOutlineSupportAgent />
-                    </ProductCard>
-                    <ProductCard title="AI Meeting Notes" description="Perfectly written by AI">
-                        <SiGotomeeting />
-                    </ProductCard>
-                    <ProductCard title="Enterprise Search" description="Find answers instantly">
-                        <FaSearchDollar />
-                    </ProductCard>
-                </ListColMenu>
-
-            </div>
-            <div className="">
-                <ListColMenu title="Explore use cases" type_of_col="sample">
-                    <Link to="/">
-                        <p>For work</p>
-                    </Link>
-                    <Link to="/">
-                        <p>For life</p>
-                    </Link>
-                </ListColMenu>
-            </div>
-        </>
-    )
-}
-
-const EverySolutionsMenu: React.FC = () => {
-    return (
-        <>
-            <ListColMenu title="Teams" type_of_col="header">
-                <Link to="/"><p>Eng & Product</p></Link>
-                <Link to="/"><p>Design</p></Link>
-                <Link to="/"><p>Marketing</p></Link>
-                <Link to="/"><p>IT</p></Link>
-            </ListColMenu>
-            <ListColMenu title="Company size" type_of_col="sample">
-                <Link to="/"><p>Startups</p></Link>
-                <Link to="/"><p>Small businesses</p></Link>
-                <Link to="/"><p>Enterprise</p></Link>
-            </ListColMenu>
-            <ListColMenu title="Resources" type_of_col="sample">
-                <Link to="/"><p>Education</p></Link>
-                <Link to="/"><p>Personal</p></Link>
-                <Link to="/"><p>Professional</p></Link>
-                <Link to="/"><p>AI use cases</p></Link>
-            </ListColMenu>
-        </>
-    )
-}
-
-const EveryResourcesMenu: React.FC = () => {
-    return (
-        <>
-            <ListColMenu title="Browse" type_of_col="header">
-                <Link to="/"><p>Templates</p></Link>
-                <Link to="/"><p>Consultants</p></Link>
-                <Link to="/"><p>Integrations</p></Link>
-            </ListColMenu>
-            <ListColMenu title="Discover" type_of_col="sample">
-                <Link to="/"><p>What's New</p></Link>
-                <Link to="/"><p>Customer stories</p></Link>
-                <Link to="/"><p>Blog</p></Link>
-                <Link to="/"><p>Webinars</p></Link>
-            </ListColMenu>
-            <ListColMenu title="Learn" type_of_col="sample">
-                <Link to="/"><p>Academy</p></Link>
-                <Link to="/"><p>Product tours</p></Link>
-                <Link to="/"><p>Product tours</p></Link>
-            </ListColMenu>
-        </>
-    )
-}
-
-const ShowOurProductInSmallDeviceMenu: React.FC = () => {
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
-            className="mb-4 px-5"
-        >
-            <div className="bg-gray-200 md:flex px-4 py-2 rounded-sm">
-                <div className="flex md:flex-1 md:items-center py-1.5 group">
-                    <img src={ume_logo} className="size-6 md:size-14 mr-2.5" />
-                    <div>
-                        <h1 className="group-hover:underline md:text-lg underline-offset-2">Notion</h1>
-                        <p className="hidden md:block text-xs text-gray-500">Your AI workspace</p>
-                    </div>
-                </div>
-                <div className="md:flex-1">
-                    <div className="flex py-1.5 group"><BiCalendar className="size-6 mr-2.5" /><p className="group-hover:underline underline-offset-2">Notion Calendar</p></div>
-                    <div className="flex py-1.5 group"><FaMailchimp className="size-6 mr-2.5" /><p className="group-hover:underline underline-offset-2">Notion Mail</p></div>
-                </div>
-            </div>
-        </motion.div>
-    )
-}

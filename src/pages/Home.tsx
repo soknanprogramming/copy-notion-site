@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
+
 
 const Home: React.FC = () => {
+    useEffect(() => {
+        document.title = "The AI workspace that works for you. | Notion";
+    }, []);
     return(
         <>
             <h1>Home</h1>
