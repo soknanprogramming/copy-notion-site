@@ -233,7 +233,7 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
 
     return (
         <>
-            <div className="sticky bg-white top-0">
+            <div className="sticky bg-white top-0 z-50">
                 <div className={(!isOpenSmallDeviceMenu && isScrolledMoreThan66px && "border-b-gray-300 border-b") + " h-16.5 flex justify-between items-center px-5"}>
                     <div>
                         <img className="size-8" src={ume_logo} />
@@ -281,7 +281,7 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                             <motion.div
                                 ref={productMenuRef}
                                 initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
+                                animate={{ opacity: 1, y: 0, transition: { duration: 0.3 } }}
                                 exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
                                 className={" w-2xl fixed right-0 pt-3 left-0 mx-auto"}
                             >
@@ -337,7 +337,7 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                             <motion.div
                                 ref={aiMenuRef}
                                 initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
+                                animate={{ opacity: 1, y: 0, transition: { duration: 0.3 } }}
                                 exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
                                 className={" w-2xl fixed right-0 pt-3 left-0 mx-auto"}
                             >
@@ -358,7 +358,7 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                             <motion.div
                                 ref={solutionsMenuRef}
                                 initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
+                                animate={{ opacity: 1, y: 0, transition: { duration: 0.3 } }}
                                 exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
                                 className={" w-2xl fixed right-0 pt-3 left-0 mx-auto"}
                             >
@@ -376,7 +376,7 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                             <motion.div
                                 ref={resourcesMenuRef}
                                 initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
+                                animate={{ opacity: 1, y: 0, transition: { duration: 0.3 } }}
                                 exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
                                 className={" w-2xl fixed right-0 pt-3 left-0 mx-auto"}
                             >

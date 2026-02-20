@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+video {
+  box-shadow: none;
+  display: block;
+}
