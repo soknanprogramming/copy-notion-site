@@ -4,9 +4,13 @@ import NotionBar from './Footer/NotionBar'
 import CardFooter from './Footer/CardFooter'
 import { FaLongArrowAltRight } from "react-icons/fa";
 
-const Footer: React.FC = () => {
+interface Prop {
+  add_border?: boolean;
+}
+
+const Footer: React.FC<Prop> = ({ add_border = false }) => {
   return (
-    <footer className='flex px-35 py-10 justify-between border-t border-gray-300'>
+    <footer className={`flex px-35 py-10 justify-between ${add_border && "border-t border-gray-300"}`}>
       <NotionBar className='w-max-72' />
       <CardFooter title='Company'>
         <Link to="/"><p>About us</p></Link>
