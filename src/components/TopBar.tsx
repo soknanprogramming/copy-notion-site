@@ -285,7 +285,7 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                                 exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
                                 className={" w-2xl fixed right-0 pt-3 left-0 mx-auto"}
                             >
-                                <div className={"justify-center bg-white items-center flex flex-col px-3 border w-2xl mx-auto rounded-2xl"}>
+                                <div className={"justify-center bg-white items-center flex flex-col px-3 shadow shadow-gray-300 w-2xl mx-auto rounded-2xl"}>
                                     <div className="flex w-full my-3 justify-between bg-gray-100 p-3 rounded-md">
                                         <div className="flex items-center gap-2 group">
                                             <div>
@@ -341,7 +341,7 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                                 exit={{ opacity: 0, y: -10, transition: { duration: 0.3 } }}
                                 className={" w-2xl fixed right-0 pt-3 left-0 mx-auto"}
                             >
-                                <div className="bg-white justify-between flex p-3 border w-2xl *:w-55 mx-auto rounded-2xl">
+                                <div className="bg-white justify-between flex p-3 shadow shadow-gray-300 w-2xl *:w-55 mx-auto rounded-2xl">
                                     <div className="self-center">
                                         <img className="size-50" src={ume_welcome} alt="" />
                                     </div>

@@ -7,7 +7,7 @@ interface Props {
 
 const CardRowMenu: React.FC<Props> = ({ className = "", children }) => {
     return (
-        <div className={`${className} bg-white justify-between flex p-3 border w-2xl *:w-55 mx-auto rounded-2xl`}>
+        <div className={`${className} bg-white justify-between flex p-3 shadow shadow-gray-300 w-2xl *:w-55 mx-auto rounded-2xl`}>
             {children}
         </div>
     )
