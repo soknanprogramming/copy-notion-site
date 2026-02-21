@@ -142,10 +142,10 @@ const Home: React.FC = () => {
                     </div>
                 </div>
             </section>
-            <div className="px-30 bg-gray-100 pt-15">
+            <div className="px-30 bg-gray-100 pt-15 pb-10">
                 <h1 className="text-6xl font-bold tracking-tight">Introducing Notion 3.0</h1>
                 {/* Notion Agent */}
-                <div className="flex justify-between w-7xl mt-9 mb-3 rounded-xl hover:shadow-2xl shadow-gray-400">
+                <div className="flex justify-between w-7xl mt-9 mb-3 rounded-xl hover:shadow-2xl shadow-gray-400 transition-shadow duration-300">
                     <div className="bg-white flex-1 rounded-l-xl">
                         
                     </div>

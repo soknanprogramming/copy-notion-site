@@ -233,7 +233,7 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
 
     return (
         <>
-            <div className="sticky bg-white top-0 z-50">
+            <header className="sticky bg-white top-0 z-50">
                 <div className={(!isOpenSmallDeviceMenu && isScrolledMoreThan66px && "border-b-gray-300 border-b") + " h-16.5 flex justify-between items-center px-5"}>
                     <div>
                         <img className="size-8" src={ume_logo} />
@@ -388,7 +388,7 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
                     }
 
                 </AnimatePresence>
-            </div>
+            </header>
             {/* small device menu */}
             {isOpenSmallDeviceMenu && (
                 <div className={"w-full h-full bg-white "}>
