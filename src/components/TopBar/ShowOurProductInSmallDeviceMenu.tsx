@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { BiCalendar } from "react-icons/bi";
 import { FaMailchimp } from "react-icons/fa";
-import ume_logo from "../../assets/image/logo_ume.png"
+import ume_logo from "../../assets/images/logo_ume.png"
 
 
 const ShowOurProductInSmallDeviceMenu: React.FC = () => {

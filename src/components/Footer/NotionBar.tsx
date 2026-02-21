@@ -1,5 +1,5 @@
 import React from 'react'
-import ume_logo from "./../../assets/image/logo_ume.png"
+import ume_logo from "./../../assets/images/logo_ume.png"
 import { AiOutlineInstagram } from "react-icons/ai";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaLinkedin } from "react-icons/fa";

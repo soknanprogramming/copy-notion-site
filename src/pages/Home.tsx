@@ -12,8 +12,7 @@ import volvo_photo from "../assets/svg/volvo.avif";
 import perplexity_photo from "../assets/svg/Perplexity_AI_logo.svg.png";
 import { MdPause } from "react-icons/md";
 import { MdPlayArrow } from "react-icons/md";
-import accordion_background from "../assets/image/accordion-background.avif";
-
+import NotionAgent from "../components/Home/NotionAgent";
 
 const Home: React.FC = () => {
 
@@ -145,15 +144,10 @@ const Home: React.FC = () => {
             <div className="px-30 bg-gray-100 pt-15 pb-10">
                 <h1 className="text-6xl font-bold tracking-tight">Introducing Notion 3.0</h1>
                 {/* Notion Agent */}
-                <div className="flex justify-between w-7xl mt-9 mb-3 rounded-xl hover:shadow-2xl shadow-gray-400 transition-shadow duration-300">
-                    <div className="bg-white flex-1 rounded-l-xl">
-                        
-                    </div>
-                    <div
-                        className="w-200.5 h-138.5 bg-cover bg-center rounded-r-xl"
-                        style={{ backgroundImage: `url(${accordion_background})` }}
-                    ></div>
-
+                <NotionAgent/>
+                <div className="font-serif text-center flex flex-col gap-2 py-4">
+                    <q className="text-2xl">Your AI everything app.</q>
+                    <b className="text-xl">Forbes</b>
                 </div>
             </div>
         </div>

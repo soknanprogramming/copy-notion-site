@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { Link } from "react-router-dom";
-import ume_logo from "../assets/image/logo_ume.png"
-import ume_welcome from "../assets/image/ume-welcome.png"
+import ume_logo from "../assets/images/logo_ume.png"
+import ume_welcome from "../assets/images/ume-welcome.png"
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { FaMailchimp } from "react-icons/fa";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
