@@ -234,7 +234,7 @@ const TopBar: React.FC<Prop> = ({ setIsShowBody }) => {
     return (
         <>
             <header className="sticky bg-white top-0 z-50">
-                <div className={(!isOpenSmallDeviceMenu && isScrolledMoreThan66px && "border-b-gray-300 border-b") + " h-16.5 flex justify-between items-center px-5"}>
+                <div className={(!isOpenSmallDeviceMenu && isScrolledMoreThan66px ? "border-b-gray-300" : "border-b-white") + " border-b h-16.5 flex justify-between items-center px-5"}>
                     <div>
                         <img className="size-8" src={ume_logo} />
                     </div>

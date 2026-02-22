@@ -13,7 +13,7 @@ interface Prop {
 const NotionBar: React.FC<Prop> = ({ className = "" }) => {
   return (
     <div className={`p-2 flex flex-col  ${className}`}>
-        <div className='flex items-center text-2xl py-3'>
+        <div className='flex items-end text-2xl py-3'>
             <img className='size-9' src={ume_logo} />
             <p className='pl-2'>Notion</p>
         </div>

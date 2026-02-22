@@ -13,6 +13,7 @@ import perplexity_photo from "../assets/svg/Perplexity_AI_logo.svg.png";
 import { MdPause } from "react-icons/md";
 import { MdPlayArrow } from "react-icons/md";
 import NotionAgent from "../components/Home/NotionAgent";
+import MoreProductivity from "../components/Home/MoreProductivity";
 
 const Home: React.FC = () => {
 
@@ -149,6 +150,9 @@ const Home: React.FC = () => {
                     <q className="text-2xl">Your AI everything app.</q>
                     <b className="text-xl">Forbes</b>
                 </div>
+            </div>
+            <div className="px-30 pt-15 pb-10">
+                <MoreProductivity className="text-7xl"/>
             </div>
         </div>
     )
