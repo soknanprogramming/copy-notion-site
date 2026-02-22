@@ -10,7 +10,7 @@ function App() {
       <TopBar setIsShowBody={setIsShowBody}/>
       <div className={isShowBody ? "block" : "hidden"}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/copy-notion-site" element={<Home />} />
         </Routes>
       </div>
       <Footer add_border/>
