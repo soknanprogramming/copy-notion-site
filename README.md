@@ -1,3 +1,9 @@
+# About this code
+
+you can visit: https://soknanprogramming.github.io/copy-notion-site/
+
+my code if just learn react.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
