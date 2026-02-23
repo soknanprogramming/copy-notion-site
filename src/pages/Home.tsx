@@ -60,7 +60,7 @@ const Home: React.FC = () => {
 
     return (
         <div className="z-10">
-            <section className="flex flex-col px-30 items-center text-7xl relative">
+            <section className="flex flex-col px-30 items-center max-text-7xl relative">
                 {/* videos session */}
                 <div className="w-3xl items-center h-45 overflow-hidden">
                     <video
@@ -74,15 +74,15 @@ const Home: React.FC = () => {
                 </div>
                 <div className="h-0.5 w-full -m-0.5 bg-white "></div>
                 <header className="text-center">
-                    <h1 className="text-7xl py-2.5 font-bold">One workspace. <br />Zero busywork.</h1>
-                    <h2 className="py-2.5 text-xl">Notion is where your teams and AI agents capture knowledge, find<br className="hidden xl:block" /> answers, and automate projects. Now a team of 7 feels like 70.</h2>
+                    <h1 className="lg:text-7xl text-5xl py-2.5 font-bold">One workspace. <br />Zero busywork.</h1>
+                    <h2 className="py-2.5 sm:text-xl text-sm">Notion is where your teams and AI agents <br className="hidden md:block lg:hidden" /> capture knowledge, find<br className="hidden lg:block" /> answers, and automate <br className="hidden md:block lg:hidden" /> projects. Now a team of 7 feels like 70.</h2>
                     <div className="py-2.5 text-lg *:px-2.5 *:py-2.5 *:mx-2.5 *:rounded-lg">
                         <button className="bg-blue-600 hover:bg-blue-500 text-white">Get Notion free</button>
                         <button className="bg-blue-100 hover:bg-blue-200 text-blue-700">Request a demo</button>
                     </div>
                 </header>
                 {/* videos session*/}
-                <div className="py-2.5 relative shadow-lg shadow-gray-300">
+                <div className="py-2.5 hidden lg:block relative shadow-lg shadow-gray-300">
                     <video
                         ref={videoRef}
                         loop
@@ -110,7 +110,7 @@ const Home: React.FC = () => {
                 </div>
                 <div className="w-7xl h-7"></div>
                 {/* Trusted by top teams */}
-                <div ref={borderRef} className={`z-30 sticky bottom-0 flex w-7xl h-14 items-center justify-center bg-white ${isStuck ? "border-t border-gray-300" : ""}`}>
+                <div ref={borderRef} className={`z-30 sticky bottom-0 flex flex-col lg:flex-row w-7xl h-14 items-center justify-center bg-white ${isStuck ? "border-t border-gray-300" : ""}`}>
                     <div>
                         <p className="text-sm pr-10">Trusted by top teams</p>
                     </div>
@@ -133,10 +133,10 @@ const Home: React.FC = () => {
                         <div>
                             <img src={nvidia_photo} alt="" />
                         </div>
-                        <div>
+                        <div className="hidden xl:block">
                             <img src={volvo_photo} alt="" />
                         </div>
-                        <div>
+                        <div className="hidden xl:block">
                             <img src={perplexity_photo} alt="" />
                         </div>
                     </div>
