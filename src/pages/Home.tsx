@@ -14,6 +14,8 @@ import { MdPause } from "react-icons/md";
 import { MdPlayArrow } from "react-icons/md";
 import NotionAgent from "../components/Home/NotionAgent";
 import MoreProductivity from "../components/Home/MoreProductivity";
+import Footer from "../components/Footer"
+
 
 const Home: React.FC = () => {
 
@@ -59,102 +61,105 @@ const Home: React.FC = () => {
     }
 
     return (
-        <div className="z-10">
-            <section className="flex flex-col px-30 items-center max-text-7xl relative">
-                {/* videos session */}
-                <div className="w-3xl items-center h-45 overflow-hidden">
-                    <video
-                        autoPlay
-                        loop
-                        muted
-                        className="w-full block object-cover"
-                    >
-                        <source src={homepage_hero_animation} type="video/mp4" />
-                    </video>
-                </div>
-                <div className="h-0.5 w-full -m-0.5 bg-white "></div>
-                <header className="text-center">
-                    <h1 className="lg:text-7xl text-5xl py-2.5 font-bold">One workspace. <br />Zero busywork.</h1>
-                    <h2 className="py-2.5 sm:text-xl text-sm">Notion is where your teams and AI agents <br className="hidden md:block lg:hidden" /> capture knowledge, find<br className="hidden lg:block" /> answers, and automate <br className="hidden md:block lg:hidden" /> projects. Now a team of 7 feels like 70.</h2>
-                    <div className="py-2.5 text-lg *:px-2.5 *:py-2.5 *:mx-2.5 *:rounded-lg">
-                        <button className="bg-blue-600 hover:bg-blue-500 text-white">Get Notion free</button>
-                        <button className="bg-blue-100 hover:bg-blue-200 text-blue-700">Request a demo</button>
+        <>
+            <div className="z-10">
+                <section className="flex flex-col px-30 items-center max-text-7xl relative">
+                    {/* videos session */}
+                    <div className="w-3xl items-center h-45 overflow-hidden">
+                        <video
+                            autoPlay
+                            loop
+                            muted
+                            className="w-full block object-cover"
+                        >
+                            <source src={homepage_hero_animation} type="video/mp4" />
+                        </video>
                     </div>
-                </header>
-                {/* videos session*/}
-                <div className="py-2.5 hidden lg:block relative shadow-lg shadow-gray-300">
-                    <video
-                        ref={videoRef}
-                        loop
-                        muted
-                        src={desktop_HomepageHero_compressed_v007_650}
-                        className="block w-7xl h-auto object-cover"
-                    >
+                    <div className="h-0.5 w-full -m-0.5 bg-white "></div>
+                    <header className="text-center">
+                        <h1 className="lg:text-7xl text-5xl py-2.5 font-bold">One workspace. <br />Zero busywork.</h1>
+                        <h2 className="py-2.5 sm:text-xl text-sm">Notion is where your teams and AI agents <br className="hidden md:block lg:hidden" /> capture knowledge, find<br className="hidden lg:block" /> answers, and automate <br className="hidden md:block lg:hidden" /> projects. Now a team of 7 feels like 70.</h2>
+                        <div className="py-2.5 text-lg *:px-2.5 *:py-2.5 *:mx-2.5 *:rounded-lg">
+                            <button className="bg-blue-600 hover:bg-blue-500 text-white">Get Notion free</button>
+                            <button className="bg-blue-100 hover:bg-blue-200 text-blue-700">Request a demo</button>
+                        </div>
+                    </header>
+                    {/* videos session*/}
+                    <div className="py-2.5 hidden lg:block relative shadow-lg shadow-gray-300">
+                        <video
+                            ref={videoRef}
+                            loop
+                            muted
+                            src={desktop_HomepageHero_compressed_v007_650}
+                            className="block w-7xl h-auto object-cover"
+                        >
 
-                    </video>
-                    <div className="h-1 absolute bottom-2 w-7xl  bg-white"></div>
-                    <motion.button
-                        whileHover={{
-                            scale: 1.1,
-                            transition: {
-                                duration: 0.2
+                        </video>
+                        <div className="h-1 absolute bottom-2 w-7xl  bg-white"></div>
+                        <motion.button
+                            whileHover={{
+                                scale: 1.1,
+                                transition: {
+                                    duration: 0.2
+                                }
+                            }}
+                            onClick={toggleVideo}
+                            className="absolute z-20 bottom-5 left-5 *:size-5 bg-gray-200 p-1.5 rounded-full"
+                        >
+                            {
+                                isPlaying ? <MdPause /> : <MdPlayArrow />
                             }
-                        }}
-                        onClick={toggleVideo}
-                        className="absolute z-20 bottom-5 left-5 *:size-5 bg-gray-200 p-1.5 rounded-full"
-                    >
-                        {
-                            isPlaying ? <MdPause /> : <MdPlayArrow />
-                        }
-                    </motion.button>
-                </div>
-                <div className="w-7xl h-7"></div>
-                {/* Trusted by top teams */}
-                <div ref={borderRef} className={`z-30 sticky bottom-0 flex flex-col lg:flex-row w-7xl h-14 items-center justify-center bg-white ${isStuck ? "border-t border-gray-300" : ""}`}>
-                    <div>
-                        <p className="text-sm pr-10">Trusted by top teams</p>
+                        </motion.button>
                     </div>
-                    <div className={"" + "[&>*>img]:h-5 *:px-4 flex"}>
+                    <div className="w-7xl h-7"></div>
+                    {/* Trusted by top teams */}
+                    <div ref={borderRef} className={`z-30 sticky bottom-0 flex flex-col lg:flex-row w-7xl h-14 items-center justify-center bg-white ${isStuck ? "border-t border-gray-300" : ""}`}>
                         <div>
-                            <img src={figma_photo} alt="" />
+                            <p className="text-sm pr-10">Trusted by top teams</p>
                         </div>
-                        <div>
-                            <img src={openAI_photo} alt="" />
-                        </div>
-                        <div>
-                            <img src={ramp_photo} alt="" />
-                        </div>
-                        <div>
-                            <img src={cursor_photo} alt="" />
-                        </div>
-                        <div>
-                            <img src={vercel_photo} alt="" />
-                        </div>
-                        <div>
-                            <img src={nvidia_photo} alt="" />
-                        </div>
-                        <div className="hidden xl:block">
-                            <img src={volvo_photo} alt="" />
-                        </div>
-                        <div className="hidden xl:block">
-                            <img src={perplexity_photo} alt="" />
+                        <div className={"" + "[&>*>img]:h-5 *:px-4 flex"}>
+                            <div>
+                                <img src={figma_photo} alt="" />
+                            </div>
+                            <div>
+                                <img src={openAI_photo} alt="" />
+                            </div>
+                            <div>
+                                <img src={ramp_photo} alt="" />
+                            </div>
+                            <div>
+                                <img src={cursor_photo} alt="" />
+                            </div>
+                            <div>
+                                <img src={vercel_photo} alt="" />
+                            </div>
+                            <div>
+                                <img src={nvidia_photo} alt="" />
+                            </div>
+                            <div className="hidden xl:block">
+                                <img src={volvo_photo} alt="" />
+                            </div>
+                            <div className="hidden xl:block">
+                                <img src={perplexity_photo} alt="" />
+                            </div>
                         </div>
                     </div>
+                </section>
+                <div className="px-30 bg-gray-100 pt-15 pb-10">
+                    <h1 className="text-6xl font-bold tracking-tight">Introducing Notion 3.0</h1>
+                    {/* Notion Agent */}
+                    <NotionAgent/>
+                    <div className="font-serif text-center flex flex-col gap-2 py-4">
+                        <q className="text-2xl">Your AI everything app.</q>
+                        <b className="text-xl">Forbes</b>
+                    </div>
                 </div>
-            </section>
-            <div className="px-30 bg-gray-100 pt-15 pb-10">
-                <h1 className="text-6xl font-bold tracking-tight">Introducing Notion 3.0</h1>
-                {/* Notion Agent */}
-                <NotionAgent/>
-                <div className="font-serif text-center flex flex-col gap-2 py-4">
-                    <q className="text-2xl">Your AI everything app.</q>
-                    <b className="text-xl">Forbes</b>
+                <div className="px-30 pt-15 pb-10">
+                    <MoreProductivity className="text-7xl"/>
                 </div>
             </div>
-            <div className="px-30 pt-15 pb-10">
-                <MoreProductivity className="text-7xl"/>
-            </div>
-        </div>
+            <Footer/>
+        </>
     )
 }
 
